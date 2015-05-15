@@ -1,0 +1,13 @@
+{
+  "name": "powerest",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "scripts": {
+    "server": "./node_modules/.bin/http-server ./public --cors"
+  },
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "http-server": "^0.8.0"
+  }
+}
