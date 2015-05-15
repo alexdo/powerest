@@ -19,6 +19,6 @@ var routes = (
 );
 
 Router.run(routes, Router.HistoryLocation, function (Handler) {
-    React.render(<Handler />, document.getElementById('content'));
+    React.render(<Handler />, document.body);
 });
 
