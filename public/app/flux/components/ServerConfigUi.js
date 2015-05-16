@@ -38,7 +38,7 @@ var ServerConfigUi = React.createClass({
             $('.wrapper').removeClass('loading');
 
             _.each(allConfigs, function(item) {
-                serverConfigItems.push(<ServerConfigItem item={item} />);
+                serverConfigItems.push(<ServerConfigItem key={item.name} item={item} />);
             });
         }
 

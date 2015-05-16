@@ -47,7 +47,7 @@ var ServerStatsUi = React.createClass({
             _.each(whitelistedItems, function(itemName) {
                 var item = _.findWhere(stats, { name: itemName });
                 if(item) {
-                    serverStatsItems.push(<ServerStatsItem item={item} />);
+                    serverStatsItems.push(<ServerStatsItem key={item.name} item={item} />);
                 }
             });
         }
