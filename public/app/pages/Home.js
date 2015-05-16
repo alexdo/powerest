@@ -1,16 +1,18 @@
 var React = require('react');
-var ContentHeader = require('../elements/ContentHeaderElement');
+var Config = require('../config');
 
+var ContentHeader = require('../elements/ContentHeaderElement');
+var ServerStatsUi = require('../flux/components/ServerStatsUi');
 
 var Home = React.createClass({
     render: function() {
+        var headline = '' + Config.server + ' Statistics';
+
         return (
             <div className="content-wrapper">
-                <ContentHeader headline="Home" />
+                <ContentHeader headline={headline} />
                 <section className="content">
-
-                    HOME MAN!
-
+                    <ServerStatsUi />
                 </section>
             </div>
         );
