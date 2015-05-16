@@ -7,14 +7,6 @@ var FooterComponent = require('../components/FooterComponent');
 
 require('./application.scss');
 
-/*<header>
- <ul>
- <li><Link to="home">Home</Link></li>
- <li><Link to="about">About</Link></li>
- </ul>
- </header>*/
-
-
 var App = React.createClass({
     render: function() {
         return (
