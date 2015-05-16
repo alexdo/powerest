@@ -5,7 +5,7 @@ var SidebarComponent = require('../components/SidebarComponent');
 var ContentComponent = require('../components/ContentComponent');
 var FooterComponent = require('../components/FooterComponent');
 
-require('./application.css');
+require('./application.scss');
 
 /*<header>
  <ul>
