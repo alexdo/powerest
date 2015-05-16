@@ -11,6 +11,15 @@ a.logo {
   }
 }
 
+.wrap-content {
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.pre {
+  font-family: "Menlo", "Monaco", "Courier New", Courier, monospace;
+}
+
 .wrapper {
   .spinner {
     border: 4px solid $navy;

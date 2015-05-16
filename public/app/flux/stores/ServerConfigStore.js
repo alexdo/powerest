@@ -4,10 +4,12 @@ var assign = require('object-assign');
 var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ServerConfigConstants = require('../constants/ServerConfigConstants');
+var ApiClient = require('../../core/api');
 
 var CHANGE_EVENT = 'change';
 
 var _items = {}; // collection of config items
+var _initialized = false;
 
 /**
  * Create a config item.
@@ -32,13 +34,30 @@ function destroy(name) {
 }
 
 var ServerConfigStore = assign({}, EventEmitter.prototype, {
-
     /**
      * Get the entire collection of TODOs.
      * @return {object}
      */
     getAll: function() {
+        if (!this._initialized) {
+            this.loadFromApi();
+            this._initialized = true;
+        }
+
         return _items;
+    },
+
+    loadFromApi: function() {
+        var that = this;
+        ApiClient.get('config', function(response) {
+            var payload = response.entity;
+
+            _.each(payload, function(item) {
+                create(item.name, item.value);
+            });
+
+            that.emitChange();
+        });
     },
 
     emitChange: function() {
