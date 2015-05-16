@@ -24,6 +24,7 @@
     "webpack-dev-server": "^1.8.2"
   },
   "dependencies": {
+    "autoprefixer-loader": "^1.2.0",
     "react": "^0.13.3",
     "react-bootstrap": "^0.22.3",
     "react-router": "0.13.x",
