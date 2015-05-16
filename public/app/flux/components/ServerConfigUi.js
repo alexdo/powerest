@@ -1,0 +1,63 @@
+var React = require('react');
+var ServerConfigStore = require('../stores/ServerConfigStore');
+
+function getConfigState() {
+    return {
+        allConfigs: ServerConfigStore.getAll()
+    };
+}
+
+var ServerConfigUi = React.createClass({
+
+    getInitialState: function() {
+        return getConfigState();
+    },
+
+    componentDidMount: function() {
+        ServerConfigStore.addChangeListener(this._onChange);
+    },
+
+    componentWillUnmount: function() {
+        ServerConfigStore.removeChangeListener(this._onChange);
+    },
+
+    /**
+     * @return {object}
+     */
+    render: function() {
+        var allConfigs = this.props.allConfigs;
+        var serverConfigItems = [];
+
+        for (var item in allConfigs) {
+            //serverConfigItems.push(<ServerConfigItem item={item} />);
+        }
+
+        return (
+            <div className="row">
+                <div className="col-xs-12">
+                    <div className="box">
+                        <div className="box-header">
+                            <h3 className="box-title">Server Configuration</h3>
+                        </div>
+                        <div className="box-body table-responsive no-padding">
+                            <table className="table table-hover">
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                </tr>
+                                {serverConfigItems}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    },
+
+    _onChange: function() {
+        this.setState(getConfigState());
+    }
+
+});
+
+module.exports = ServerConfigUi;

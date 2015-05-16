@@ -1,5 +1,6 @@
 module.exports = {
     entry: './public/app/main.js',
+    //devtool: '#inline-source-map',
     output: {
         filename: './public/dist/bundle.js'
     },

@@ -19,10 +19,10 @@ var SidebarComponent = React.createClass({
                         {/*<li className="header">HEADER</li>*/}
                         {/* Optionally, you can add icons to the links */}
                         <NavLink to="home">
-                            <i className='fa fa-link'></i> <span>Home</span>
+                            <i className='ion ion-home'></i> <span>Home</span>
                         </NavLink>
-                        <NavLink to="about">
-                            <i className='fa fa-link'></i> <span>About</span>
+                        <NavLink to="config">
+                            <i className='ion ion-gear-a'></i> <span>Server Configuration</span>
                         </NavLink>
                         <li><a href="#"><i className='fa fa-link'></i> <span>Another Link</span></a></li>
                         <li className="treeview">
