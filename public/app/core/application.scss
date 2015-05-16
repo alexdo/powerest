@@ -1,10 +1,50 @@
-h1 {
-    font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif !important;
-}
+@import "variables";
 
 a.logo {
   img {
     width: 32px;
     margin-top: -4px;
+  }
+
+  .logo-lg img {
+    margin-right: 6px;
+  }
+}
+
+.wrapper {
+  .spinner {
+    border: 4px solid $navy;
+    border-radius: 70px;
+    height: 70px;
+    width: 70px;
+    left: 50%;
+    margin: -35px 0 0 -35px;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    display: none;
+
+    animation: loader_pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+  }
+
+  &.loading {
+    .spinner {
+      display: block;
+    }
+  }
+}
+
+@keyframes loader_pulsate {
+  0% {
+    transform: scale(.1);
+    opacity: 0.0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
   }
 }

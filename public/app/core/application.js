@@ -15,6 +15,9 @@ var App = React.createClass({
                 <SidebarComponent />
                 <ContentComponent />
                 <FooterComponent />
+
+                {/* loading indicator */}
+                <div className="spinner" />
             </div>
         );
     }
