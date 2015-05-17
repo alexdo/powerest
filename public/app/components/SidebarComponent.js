@@ -21,9 +21,11 @@ var SidebarComponent = React.createClass({
                         <NavLink to="zones">
                             <i className='ion ion-code-working'></i> <span>Zone Management</span>
                         </NavLink>
+                        {/*
                         <NavLink to="zones">
                             <i className='ion ion-ribbon-b'></i> <span>DNSSEC Signatures</span>
                         </NavLink>
+                        */}
                     </ul>
                 </section>
             </aside>

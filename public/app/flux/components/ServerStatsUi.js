@@ -32,8 +32,7 @@ var ServerStatsUi = React.createClass({
         var allStats = this.state.allStats;
         var whitelistedItems = [ "latency", "udp-queries", "udp-answers", "udp-answers-bytes",
                 "uptime", "user-msec", "sys-msec", "corrupt-packets",
-                "signatures", "signature-cache-size", "packetcache-hit", "packetcache-miss",
-                "servfail-packets"
+                "packetcache-hit", "packetcache-miss", "servfail-packets"
              ];
         var serverStatsItems = [];
 

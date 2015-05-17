@@ -139,13 +139,13 @@ var ServerStatsStore = assign({}, EventEmitter.prototype, {
             case 'query-cache-hit':
                 return 'green';
 
-            case 'uptime':
             case 'sys-msec':
             case 'user-msec':
                 return 'purple';
 
+            case 'uptime':
             case 'latency':
-                return 'yellow';
+                return 'green';
 
             case 'signature-cache-size':
             case 'signatures':

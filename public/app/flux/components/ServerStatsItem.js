@@ -1,21 +1,16 @@
 var React = require('react');
+var moment = require('moment');
+var filesize = require('file-size');
 
 var ServerStatsItem = React.createClass({
-    _formatSeconds: function(secs) {
-        secs = Math.round(secs);
-        var hours = Math.floor(secs / (60 * 60));
-        var days = Math.floor(hours / 24);
-
-        var divisor_for_minutes = secs % (60 * 60);
-        var minutes = Math.floor(divisor_for_minutes / 60);
-
-        return days + ':' + hours + ':' + minutes;
-    },
-
     formatValue: function(val, type) {
         switch(type) {
+            case 'milliseconds':
+                return val + 'ms';
             case 'seconds':
-                return this._formatSeconds(val);
+                return moment.duration(parseInt(val, 10), 'seconds').humanize();
+            case 'size':
+                return filesize(parseInt(val, 10)).human();
             default:
                 return parseInt(val, 10).toLocaleString();
         }
