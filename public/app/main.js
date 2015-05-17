@@ -8,6 +8,7 @@ var App = require('./core/application');
 var Home = require('./pages/Home');
 var ServerConfig = require('./pages/ServerConfig');
 var ServerZones = require('./pages/ServerZones');
+var ServerZoneDetail = require('./pages/ServerZoneDetail');
 
 
 var routes = (
@@ -15,6 +16,8 @@ var routes = (
         <DefaultRoute name="home" handler={Home} />
         <Route name="config" handler={ServerConfig} />
         <Route name="zones" handler={ServerZones} />
+        <Route name="newZone" path="zones/new" handler={ServerZoneDetail} />
+        <Route name="zone" path="zones/:zoneId" handler={ServerZoneDetail} />
     </Route>
 );
 
