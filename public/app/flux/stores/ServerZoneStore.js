@@ -3,7 +3,7 @@ var assign = require('object-assign');
 
 var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var ServerConfigConstants = require('../constants/ServerConfigConstants');
+var ServerZoneConstants = require('../constants/ServerZoneConstants');
 var ApiClient = require('../../core/api');
 
 var CHANGE_EVENT = 'change';
@@ -45,11 +45,11 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
 
     loadFromApi: function() {
         var that = this;
-        ApiClient.get('config', function(response) {
+        ApiClient.get('zones', function(response) {
             var payload = response.entity;
 
             _.each(payload, function(item) {
-                create(item.name, item.value);
+                create(item.id, item);
             });
 
             that.emitChange();
@@ -78,11 +78,23 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         var action = payload.action;
 
         switch(action.actionType) {
-            case ServerConfigConstants.CONFIG_CREATE:
+            case ServerZoneConstants.ZONE_CREATE:
+                // TODO create zone
                 ServerZoneStore.emitChange();
                 break;
 
-            case ServerConfigConstants.CONFIG_DESTROY:
+            case ServerZoneConstants.ZONE_EDIT:
+                // TODO edit zone
+                ServerZoneStore.emitChange();
+                break;
+
+            case ServerZoneConstants.CONFIG_DESTROY:
+                // TODO delete zone
+                ServerZoneStore.emitChange();
+                break;
+
+            case ServerZoneConstants.ZONE_NOTIFY:
+                // TODO notify zone
                 ServerZoneStore.emitChange();
                 break;
         }

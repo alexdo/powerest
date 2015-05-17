@@ -72,3 +72,25 @@ a.logo {
   margin-left: 0;
   margin-bottom: 20px;
 }
+
+#zone-list-table {
+  td {
+    line-height: 2em;
+
+    strong.lg {
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+  }
+}
+
+td.leading-icon {
+  & > i {
+    margin-right: 8px;
+  }
+}
+
+td .btn-group-sm .btn {
+  font-size: 16px;
+  padding: 2px 9px;
+}

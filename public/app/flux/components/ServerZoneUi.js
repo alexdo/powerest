@@ -3,12 +3,12 @@ var $ = window.jQuery;
 var React = require('react');
 var Config = require('../../config.js');
 
-//var ServerZoneStore = require('../stores/ServerZoneStore');
-//var ServerZoneItem = require('./ServerZoneItem');
+var ServerZoneStore = require('../stores/ServerZoneStore');
+var ServerZoneItem = require('./ServerZoneItem');
 
 function getZoneState() {
     return {
-        allZones: [] //ServerZoneStore.getAll()
+        allZones: ServerZoneStore.getAll(),
     };
 }
 
@@ -17,12 +17,39 @@ var ServerZoneUi = React.createClass({
         return getZoneState();
     },
 
+    _initializeDataTables: function() {
+        this._dataTable = $('#zone-list-table').dataTable({
+            "bPaginate": true,
+            "bLengthChange": false,
+            "bFilter": false,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    },
+
+    _removeDataTables: function() {
+        if(!!this._dataTable) {
+            this._dataTable.fnDestroy();
+        }
+    },
+
     componentDidMount: function() {
-        //ServerZoneStore.addChangeListener(this._onChange);
+        ServerZoneStore.addChangeListener(this._onChange);
+        this._initializeDataTables();
     },
 
     componentWillUnmount: function() {
-        //ServerZoneStore.removeChangeListener(this._onChange);
+        ServerZoneStore.removeChangeListener(this._onChange);
+        this._removeDataTables();
+    },
+
+    componentWillUpdate: function() {
+        this._removeDataTables();
+    },
+
+    componentDidUpdate: function() {
+        this._initializeDataTables();
     },
 
     /**
@@ -38,7 +65,7 @@ var ServerZoneUi = React.createClass({
             $('.wrapper').removeClass('loading');
 
             _.each(allZones, function(item) {
-                //serverZoneItems.push(<ServerZoneItem key={item.name} item={item} />);
+                serverZoneItems.push(<ServerZoneItem key={item.id} item={item} />);
             });
         }
 
@@ -48,15 +75,18 @@ var ServerZoneUi = React.createClass({
                     <div className="box">
                         <div className="box-header">
                             <h3 className="box-title">
-                                {Config.server}
+                                Available Zones
                             </h3>
                         </div>
-                        <div className="box-body table-responsive no-padding">
-                            <table className="table table-hover">
+                        <div className="box-body">
+                            <table className="table table-bordered table-striped table-hover" id="zone-list-table">
                                 <thead>
                                     <tr>
-                                        <th className="col-xs-4">Key</th>
-                                        <th>Value</th>
+                                        <th>Name</th>
+                                        <th>Serial</th>
+                                        <th>Notified serial</th>
+                                        <th>Creator</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
