@@ -57,3 +57,18 @@ a.logo {
     opacity: 0;
   }
 }
+
+.change-name {
+  opacity: .6;
+  cursor: pointer;
+
+  &:hover, &:active {
+    opacity: 1;
+  }
+}
+
+.user-panel .sidebar-form {
+  margin-top: 0;
+  margin-left: 0;
+  margin-bottom: 20px;
+}
