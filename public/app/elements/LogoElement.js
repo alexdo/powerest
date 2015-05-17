@@ -1,9 +1,12 @@
 var React = require('react');
 
+var Router = require('react-router'); // or var Router = ReactRouter; in browsers
+var Link = Router.Link;
+
 var LogoElement = React.createClass({
     render: function() {
         return (
-            <a href="components/admin-lte/index2.html" className="logo">
+            <a href="/#/" className="logo">
                 <span className="logo-mini">
                     <img src="images/logo-lg-transculent.png" alt="Logo" />
                 </span>
