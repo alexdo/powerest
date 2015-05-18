@@ -22,6 +22,11 @@ var NotificationUi = React.createClass({
         NotificationStore.addChangeListener(this._onChange);
         window.setTimeout(function() {
             NotificationActions.create('Testtest', 'lalalalala\nlalalalala');
+            NotificationActions.create('Testtesdasdasda54sd6a46t', 'lalalalala\nlalalalala');
+            NotificationActions.create('Testdasd4a6s54d 6a4test', 'lalalalala\nlalalalalalalalalala\nlalalalalalalalalala\nlalalalala');
+            NotificationActions.create('Testtest', 'lalalalala\nlalalalala');
+            NotificationActions.create('Testtest', 'lalalalala\nlalalalala');
+            NotificationActions.create('Testtest', 'lalalalala\nlalalalala');
         }, 2000);
     },
 
@@ -37,7 +42,7 @@ var NotificationUi = React.createClass({
         var newNotifications = _.where(this.state.notifications, {read: false});
 
         var notificationItems = _.map(this.state.notifications, function(notification) {
-            return (<NotificationItem key={notification.name} notification={notification} />);
+            return (<NotificationItem key={notification.id} notification={notification} />);
         });
 
         if(_.size(newNotifications) > 0) {
@@ -54,7 +59,7 @@ var NotificationUi = React.createClass({
                 <a onClick={function(e) { e.preventDefault(); }}><i className="ion ion-email"></i></a>
             );
         }
-        
+
         return (
             <li className="dropdown notifications-menu">
                 {notificationLabel}

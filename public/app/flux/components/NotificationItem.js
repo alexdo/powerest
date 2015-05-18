@@ -7,6 +7,22 @@ var Config = require('../../config.js');
 var NotificationActions = require('../actions/NotificationActions');
 
 var NotificationItem = React.createClass({
+    componentDidMount: function() {
+        this.setTimestampInterval();
+    },
+
+    componentWillUnmount: function() {
+        this.clearTimestampInterval();
+    },
+
+    componentWillUpdate: function() {
+        this.clearTimestampInterval();
+    },
+
+    componentDidUpdate: function() {
+        this.setTimestampInterval();
+    },
+
     /**
      * @return {object}
      */
@@ -23,7 +39,7 @@ var NotificationItem = React.createClass({
             <li>
                 <a href="#" className={classNames} data-notification-id={this.props.notification.id} onClick={this.markAsRead}>
                     <h4>
-                        {this.props.notification.subject}
+                        {this.props.notification.headline}
                         <small className="time">{moment(this.props.notification.date).fromNow()}</small>
                     </h4>
                     <p>{this.props.notification.message}</p>
@@ -35,6 +51,21 @@ var NotificationItem = React.createClass({
     markAsRead: function(e) {
         e.preventDefault();
         NotificationActions.markAsRead(this.props.notification.id);
+    },
+
+    refreshTimestamp: function() {
+        $('.notification[data-notification-id="'+this.props.notification.id+'"] .time').html(
+            moment(this.props.notification.date).fromNow()
+        );
+    },
+
+    setTimestampInterval: function() {
+        this._interval = window.setInterval(this.refreshTimestamp, 1000);
+    },
+
+    clearTimestampInterval: function() {
+        window.clearInterval(this._interval);
+        delete this._interval;
     }
 });
 

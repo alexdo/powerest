@@ -106,3 +106,41 @@ td .btn-group-sm .btn {
 h3[data-widget="collapse"] {
   cursor: pointer;
 }
+
+.notifications-menu {
+  .menu {
+    .notification {
+      position: relative;
+
+      h4 {
+        font-size: 14px;
+        word-wrap: break-word;
+        white-space: normal;
+      }
+
+      small.time {
+        position: absolute;
+        top: 17px;
+        right: 0;
+        font-size: 10px;
+        display: block;
+        padding: 6px;
+      }
+
+      p {
+        font-size: 12px;
+        word-wrap: break-word;
+        white-space: normal;
+      }
+    }
+
+    .notification.unread {
+      color: #274c71;
+      background-color: #f7fbff;
+
+      h4, p {
+        color: #274c71;
+      }
+    }
+  }
+}
