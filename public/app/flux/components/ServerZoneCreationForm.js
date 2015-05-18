@@ -39,10 +39,12 @@ var ServerZoneCreationForm = React.createClass({
      * used in different ways.
      */
     _save: function() {
-        ServerZoneActions.create(this.state.value);
-        this.setState({
-            value: ''
-        });
+        if (this.state.value.length > 0 && this.state.value.match(/\./)) {
+            ServerZoneActions.create(this.state.value);
+            this.setState({
+                value: ''
+            });
+        }
     },
 
     /**

@@ -20,14 +20,6 @@ var NotificationUi = React.createClass({
 
     componentDidMount: function() {
         NotificationStore.addChangeListener(this._onChange);
-        window.setTimeout(function() {
-            NotificationActions.create('Testtest', 'lalalalala\nlalalalala');
-            NotificationActions.create('Testtesdasdasda54sd6a46t', 'lalalalala\nlalalalala');
-            NotificationActions.create('Testdasd4a6s54d 6a4test', 'lalalalala\nlalalalalalalalalala\nlalalalalalalalalala\nlalalalala');
-            NotificationActions.create('Testtest', 'lalalalala\nlalalalala');
-            NotificationActions.create('Testtest', 'lalalalala\nlalalalala');
-            NotificationActions.create('Testtest', 'lalalalala\nlalalalala');
-        }, 2000);
     },
 
     componentWillUnmount: function() {

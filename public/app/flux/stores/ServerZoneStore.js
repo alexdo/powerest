@@ -2,11 +2,13 @@ var _ = require('underscore');
 var assign = require('object-assign');
 var $ = window.jQuery;
 
-var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var ServerZoneConstants = require('../constants/ServerZoneConstants');
+
 var ApiClient = require('../../core/api');
 var Config = require('../../config');
+var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
+var ServerZoneConstants = require('../constants/ServerZoneConstants');
+var NotificationActions = require('../actions/NotificationActions');
 
 var CHANGE_EVENT = 'change';
 
@@ -81,7 +83,7 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         };
 
         ApiClient.post('zones', payload, function(response) {
-            console.log(response);
+            NotificationActions.create('Creation API Response:', response);
             $('.wrapper').addClass('loading');
             window.setTimeout(function() {
                 that.loadFromApi();
