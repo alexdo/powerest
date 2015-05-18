@@ -22,23 +22,29 @@ class PdnsApiClient {
 
 
     get(url, callback) {
-        this.performRequest('GET', url, callback);
+        this.performRequest('GET', url, null, callback);
     }
 
-    post(url, callback) {
-        this.performRequest('POST', url, callback);
+    post(url, payload, callback) {
+        this.performRequest('POST', url, payload, callback);
     }
 
-    put(url, callback) {
-        this.performRequest('PUT', url, callback);
+    put(url, payload, callback) {
+        this.performRequest('PUT', url, payload, callback);
     }
 
     del(url, callback) {
-        this.performRequest('DELETE', url, callback);
+        this.performRequest('DELETE', url, null, callback);
     }
 
-    performRequest(method, url, callback) {
-        this.client({ method: method, path: this.buildUrl(url) })
+    performRequest(method, url, payload = null, callback = null) {
+        var clientOptions = { method: method, path: this.buildUrl(url) };
+
+        if(!!payload) {
+            clientOptions.entity = JSON.stringify(payload);
+        }
+
+        this.client(clientOptions)
             .then(function(response) {
                 if(typeof callback === 'function') {
                     callback(response);
