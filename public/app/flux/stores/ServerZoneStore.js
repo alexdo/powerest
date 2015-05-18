@@ -6,6 +6,7 @@ var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ServerZoneConstants = require('../constants/ServerZoneConstants');
 var ApiClient = require('../../core/api');
+var Config = require('../../config');
 
 var CHANGE_EVENT = 'change';
 
@@ -68,6 +69,26 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         });
     },
 
+
+    create: function (domainName) {
+        var that = this;
+
+        var payload = {
+            kind: 'master',
+            name: domainName,
+            account: !!Config.user_name ? Config.user_name : null,
+            nameservers: []
+        };
+
+        ApiClient.post('zones', payload, function(response) {
+            console.log(response);
+            $('.wrapper').addClass('loading');
+            window.setTimeout(function() {
+                that.loadFromApi();
+            }, 1000);
+        });
+    },
+
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
@@ -89,7 +110,7 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
     dispatcherIndex: PowerestDispatcher.register(function(action) {
         switch(action.actionType) {
             case ServerZoneConstants.ZONE_CREATE:
-                // TODO create zone
+                ServerZoneStore.create(action.domainName);
                 ServerZoneStore.emitChange();
                 break;
 

@@ -22,14 +22,14 @@ var ServerZoneItem = React.createClass({
             notifiedSerial = (
                 <span className="text-green">
                     {this.props.item.notified_serial}
-                    <i className="ion ion-checkmark" />
+                    &nbsp;<i className="ion ion-checkmark" />
                 </span>
             );
         } else {
             notifiedSerial = (
-                <span className="text-red" data-toggle="tooltip" title="PowerDNS is notifying slaves about an updated zone.">
+                <span className="text-yellow" data-toggle="tooltip" title="PowerDNS is notifying slaves about an updated zone.">
                     {this.props.item.notified_serial}
-                    <i className="ion ion-loop fa-spin" />
+                    &nbsp;<i className="ion ion-loop fa-spin" />
                 </span>
             );
         }

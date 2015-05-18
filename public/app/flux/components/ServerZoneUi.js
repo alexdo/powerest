@@ -73,11 +73,16 @@ var ServerZoneUi = React.createClass({
         return (
             <div className="row">
                 <div className="col-xs-12">
-                    <div className="box box-success">
+                    <div className="box box-success collapsed-box">
                         <div className="box-header">
-                            <h3 className="box-title">
+                            <h3 className="box-title" data-widget="collapse">
                                 Add a new Zone
                             </h3>
+                            <div className="box-tools pull-right">
+                                <button className="btn btn-box-tool" data-widget="collapse">
+                                    <i className="fa fa-plus" />
+                                </button>
+                            </div>
                         </div>
                         <div className="box-body">
                             <ServerZoneCreationForm />

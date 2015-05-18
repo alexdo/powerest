@@ -102,3 +102,7 @@ td .btn-group-sm .btn {
 .btn.icon-left i {
   margin-right: .35em;
 }
+
+h3[data-widget="collapse"] {
+  cursor: pointer;
+}
