@@ -90,9 +90,7 @@ var ServerStatsStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-    dispatcherIndex: PowerestDispatcher.register(function(payload) {
-        var action = payload.action;
-
+    dispatcherIndex: PowerestDispatcher.register(function(action) {
         switch(action.actionType) {
             case ServerStatsConstants.STATS_CREATE:
                 ServerStatsStore.emitChange();

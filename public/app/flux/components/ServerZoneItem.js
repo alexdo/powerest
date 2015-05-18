@@ -8,7 +8,7 @@ var ServerZoneItem = React.createClass({
     /**
      * @return {object}
      */
-    render: function() {
+    render: function () {
         var dnssecIcon;
         var notifiedSerial;
 
@@ -35,7 +35,7 @@ var ServerZoneItem = React.createClass({
         }
 
         return (
-            <tr>
+            <tr data-zone-id={this.props.item.id}>
                 <td className="leading-icon">
                     {dnssecIcon}
                     <strong className="lg">{this.props.item.name}</strong>
@@ -46,16 +46,32 @@ var ServerZoneItem = React.createClass({
                 <td>
                     <ButtonToolbar>
                         <ButtonGroup bsSize="small">
-                            <a href="#" className="btn btn-primary btn-flat"><i className="ion ion-edit" /></a>
-                            <a href="#" className="btn btn-default btn-flat"><i className="ion ion-loop" /></a>
+                            <a href="#" className="btn btn-primary btn-flat">
+                                <i className="ion ion-edit" />
+                            </a>
+                            <a href="#" onClick={this._triggerNotify} className="btn btn-default btn-flat">
+                                <i className="ion ion-loop" />
+                            </a>
                         </ButtonGroup>
                         <ButtonGroup bsSize="small">
-                            <a href="#" className="btn btn-danger btn-flat"><i className="ion ion-trash-a" /></a>
+                            <a href="#" className="btn btn-danger btn-flat">
+                                <i className="ion ion-trash-a" />
+                            </a>
                         </ButtonGroup>
                     </ButtonToolbar>
                 </td>
             </tr>
         );
+    },
+
+    _triggerNotify: function (e) {
+        e.preventDefault();
+        var $btn = $(e.target).closest('.btn');
+
+        if (!$btn.hasClass('disabled')) {
+            ServerZoneActions.notify(this.props.item.id);
+            $(e.target).closest('.btn').addClass('disabled');
+        }
     }
 });
 

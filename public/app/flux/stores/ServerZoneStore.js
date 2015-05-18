@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var assign = require('object-assign');
+var $ = window.jQuery;
 
 var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var EventEmitter = require('events').EventEmitter;
@@ -56,6 +57,17 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         });
     },
 
+    notifyZone: function (zoneId) {
+        var that = this;
+
+        ApiClient.put('zones/' + zoneId + '/notify', null, function(response) {
+            $('.wrapper').addClass('loading');
+            window.setTimeout(function() {
+                that.loadFromApi();
+            }, 1000);
+        });
+    },
+
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
@@ -74,9 +86,7 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         this.removeListener(CHANGE_EVENT, callback);
     },
 
-    dispatcherIndex: PowerestDispatcher.register(function(payload) {
-        var action = payload.action;
-
+    dispatcherIndex: PowerestDispatcher.register(function(action) {
         switch(action.actionType) {
             case ServerZoneConstants.ZONE_CREATE:
                 // TODO create zone
@@ -94,7 +104,7 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
                 break;
 
             case ServerZoneConstants.ZONE_NOTIFY:
-                // TODO notify zone
+                ServerZoneStore.notifyZone(action.zoneId);
                 ServerZoneStore.emitChange();
                 break;
         }
