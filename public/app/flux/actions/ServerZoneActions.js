@@ -2,6 +2,15 @@ var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var ServerZoneConstants = require('../constants/ServerZoneConstants');
 
 var ServerZoneActions = {
+    /**
+     * @param  {string} domainName zone name
+     */
+    create: function(domainName) {
+        PowerestDispatcher.dispatch({
+            actionType: ServerZoneConstants.ZONE_CREATE,
+            domainName: domainName
+        });
+    },
 
     /**
      * @param  {string} zoneId

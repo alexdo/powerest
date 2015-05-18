@@ -94,3 +94,11 @@ td .btn-group-sm .btn {
   font-size: 16px;
   padding: 2px 9px;
 }
+
+.input-group-lg .btn-flat {
+  border-radius: 0 !important;
+}
+
+.btn.icon-left i {
+  margin-right: .35em;
+}

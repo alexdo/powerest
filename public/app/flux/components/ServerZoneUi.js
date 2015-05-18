@@ -5,10 +5,11 @@ var Config = require('../../config.js');
 
 var ServerZoneStore = require('../stores/ServerZoneStore');
 var ServerZoneItem = require('./ServerZoneItem');
+var ServerZoneCreationForm = require('./ServerZoneCreationForm');
 
 function getZoneState() {
     return {
-        allZones: ServerZoneStore.getAll(),
+        allZones: ServerZoneStore.getAll()
     };
 }
 
@@ -72,7 +73,19 @@ var ServerZoneUi = React.createClass({
         return (
             <div className="row">
                 <div className="col-xs-12">
-                    <div className="box">
+                    <div className="box box-success">
+                        <div className="box-header">
+                            <h3 className="box-title">
+                                Add a new Zone
+                            </h3>
+                        </div>
+                        <div className="box-body">
+                            <ServerZoneCreationForm />
+                        </div>
+                    </div>
+                </div>
+                <div className="col-xs-12">
+                    <div className="box box-primary">
                         <div className="box-header">
                             <h3 className="box-title">
                                 Available Zones
