@@ -2,6 +2,8 @@ var React = require('react');
 var ButtonGroup = require('react-bootstrap').ButtonGroup;
 var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
 
+var ServerZoneActions = require('../actions/ServerZoneActions');
+
 var ServerZoneItem = React.createClass({
     /**
      * @return {object}
