@@ -16,7 +16,6 @@ var routes = (
         <DefaultRoute name="home" handler={Home} />
         <Route name="config" handler={ServerConfig} />
         <Route name="zones" handler={ServerZones} />
-        <Route name="newZone" path="zones/new" handler={ServerZoneDetail} />
         <Route name="zone" path="zones/:zoneId" handler={ServerZoneDetail} />
     </Route>
 );
