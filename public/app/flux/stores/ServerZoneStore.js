@@ -54,6 +54,38 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         return _items;
     },
 
+    getById: function(zoneId) {
+        var that = this;
+
+        if(_.has(_items, zoneId)) {
+            return _items[zoneId];
+        } else {
+            ApiClient.get('zones/' + zoneId, function(response) {
+                var zone = response.entity;
+                create(zone.id, zone);
+                that.emitChange();
+            }, function(failResponse) {
+                that.initialized = false;
+                console.log("FAILED REQUEST: ", failResponse);
+
+                if(failResponse.error === 'timeout') {
+                    NotificationActions.create(
+                        'Connection error',
+                        'Unable to connect to server. Please check your connectivity and reload the page.'
+                    );
+                } else {
+                    NotificationActions.create(
+                        'Error',
+                        'Server returned a ' + failResponse.status.code + '.' +
+                        'Please check your console for more detailed errors'
+                    );
+                }
+            });
+
+            return null;
+        }
+    },
+
     loadFromApi: function() {
         var that = this;
         ApiClient.get('zones', function(response) {
