@@ -57,6 +57,22 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
             });
 
             that.emitChange();
+        }, function(failResponse) {
+            that.initialized = false;
+            console.log("FAILED REQUEST: ", failResponse);
+
+            if(failResponse.error === 'timeout') {
+                NotificationActions.create(
+                    'Connection error',
+                    'Unable to connect to server. Please check your connectivity and reload the page.'
+                );
+            } else {
+                NotificationActions.create(
+                    'Error',
+                    'Server returned a ' + failResponse.status.code + '.' +
+                    'Please check your console for more detailed errors'
+                );
+            }
         });
     },
 

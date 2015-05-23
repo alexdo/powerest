@@ -3,6 +3,9 @@ var Config = require('../config.js');
 var rest = require('rest');
 var mime = require('rest/interceptor/mime');
 var defaultRequest = require('rest/interceptor/defaultRequest');
+var errorCode = require('rest/interceptor/errorCode');
+var retry = require('rest/interceptor/retry');
+var timeout = require('rest/interceptor/timeout');
 
 class PdnsApiClient {
     constructor() {
@@ -21,35 +24,54 @@ class PdnsApiClient {
     }
 
 
-    get(url, callback) {
-        this.performRequest('GET', url, null, callback);
+    get(url, callback, timeoutCallback) {
+        var client = this.client;
+        client = client.wrap(retry, { initial: 1e3, max: 10e3 }).wrap(timeout, { timeout: 60e3 });
+
+        this.performRequest(client, 'GET', url, null, callback, timeoutCallback);
     }
 
-    post(url, payload, callback) {
-        this.performRequest('POST', url, payload, callback);
+    post(url, payload, callback, errorCallback) {
+        var client = this.client;
+        client = client.wrap(errorCode, { code: 400 });
+
+        this.performRequest(client, 'POST', url, payload, callback, errorCallback);
     }
 
-    put(url, payload, callback) {
-        this.performRequest('PUT', url, payload, callback);
+    put(url, payload, callback, errorCallback) {
+        var client = this.client;
+        client = client.wrap(errorCode, { code: 400 });
+
+        this.performRequest(client, 'PUT', url, payload, callback, errorCallback);
     }
 
-    del(url, callback) {
-        this.performRequest('DELETE', url, null, callback);
+    del(url, callback, errorCallback) {
+        var client = this.client;
+        client = client.wrap(errorCode, { code: 400 });
+
+        this.performRequest(client, 'DELETE', url, null, callback, errorCallback);
     }
 
-    performRequest(method, url, payload = null, callback = null) {
+    performRequest(client, method, url, payload = null, callback = null, failCallback = null) {
         var clientOptions = { method: method, path: this.buildUrl(url) };
 
         if(!!payload) {
             clientOptions.entity = JSON.stringify(payload);
         }
 
-        this.client(clientOptions)
+        client(clientOptions)
             .then(function(response) {
                 if(typeof callback === 'function') {
                     callback(response);
                 } else {
                     console.log(response)
+                }
+            },
+            function(failResponse) {
+                if(typeof failCallback === 'function') {
+                    failCallback(failResponse);
+                } else {
+                    console.log(failCallback)
                 }
             });
     }

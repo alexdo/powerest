@@ -5,6 +5,7 @@ var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ServerConfigConstants = require('../constants/ServerConfigConstants');
 var ApiClient = require('../../core/api');
+var NotificationActions = require('../actions/NotificationActions');
 
 var CHANGE_EVENT = 'change';
 
@@ -57,6 +58,22 @@ var ServerConfigStore = assign({}, EventEmitter.prototype, {
             });
 
             that.emitChange();
+        }, function(failResponse) {
+            that.initialized = false;
+            console.log("FAILED REQUEST: ", failResponse);
+
+            if(failResponse.error === 'timeout') {
+                NotificationActions.create(
+                    'Connection error',
+                    'Unable to connect to server. Please check your connectivity and reload the page.'
+                );
+            } else {
+                NotificationActions.create(
+                    'Error',
+                    'Server returned a ' + failResponse.status.code + '.' +
+                    'Please check your console for more detailed errors'
+                );
+            }
         });
     },
 
