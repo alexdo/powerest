@@ -11,6 +11,7 @@ var ServerZoneItem = React.createClass({
     render: function () {
         var dnssecIcon;
         var notifiedSerial;
+        var zoneEditUri = '#/zones/' + this.props.item.id;
 
         if (!!this.props.item.dnssec) {
             dnssecIcon = (<i className="ion ion-ios-locked text-green" data-toggle="tooltip" title="DNSSEC active" />)
@@ -46,7 +47,7 @@ var ServerZoneItem = React.createClass({
                 <td>
                     <ButtonToolbar>
                         <ButtonGroup bsSize="small">
-                            <a href="#" className="btn btn-primary btn-flat">
+                            <a href={zoneEditUri} className="btn btn-primary btn-flat">
                                 <i className="ion ion-edit" />
                             </a>
                             <a href="#" onClick={this._triggerNotify} className="btn btn-default btn-flat">
