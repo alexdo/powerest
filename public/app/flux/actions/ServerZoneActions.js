@@ -20,6 +20,16 @@ var ServerZoneActions = {
             actionType: ServerZoneConstants.ZONE_NOTIFY,
             zoneId: zoneId
         });
+    },
+
+    /**
+     * @param  {string} zoneId
+     */
+    destroy: function(zoneId) {
+        PowerestDispatcher.dispatch({
+            actionType: ServerZoneConstants.ZONE_DESTROY,
+            zoneId: zoneId
+        });
     }
 };
 

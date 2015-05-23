@@ -54,7 +54,7 @@ var ServerZoneItem = React.createClass({
                             </a>
                         </ButtonGroup>
                         <ButtonGroup bsSize="small">
-                            <a href="#" className="btn btn-danger btn-flat">
+                            <a href="#" onClick={this._triggerDestroy} className="btn btn-danger btn-flat">
                                 <i className="ion ion-trash-a" />
                             </a>
                         </ButtonGroup>
@@ -72,6 +72,11 @@ var ServerZoneItem = React.createClass({
             ServerZoneActions.notify(this.props.item.id);
             $(e.target).closest('.btn').addClass('disabled');
         }
+    },
+
+    _triggerDestroy: function (e) {
+        e.preventDefault();
+        ServerZoneActions.destroy(this.props.item.id);
     }
 });
 

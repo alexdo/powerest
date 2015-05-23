@@ -33,6 +33,13 @@ function destroy(name) {
     delete _items[name];
 }
 
+/**
+ * Clear all current items
+ */
+function clear() {
+    _items = {};
+}
+
 var ServerZoneStore = assign({}, EventEmitter.prototype, {
     /**
      * Get the entire collection of TODOs.
@@ -52,6 +59,7 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         ApiClient.get('zones', function(response) {
             var payload = response.entity;
 
+            clear();
             _.each(payload, function(item) {
                 create(item.id, item);
             });
@@ -98,12 +106,71 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
             nameservers: []
         };
 
+        $('.wrapper').addClass('loading');
         ApiClient.post('zones', payload, function(response) {
-            NotificationActions.create('Creation API Response:', response);
-            $('.wrapper').addClass('loading');
+            NotificationActions.create('Successfully created ' + domainName);
             window.setTimeout(function() {
                 that.loadFromApi();
             }, 1000);
+        }, function(failResponse) {
+            $('.wrapper').removeClass('loading');
+
+            if(_.has(failResponse, "status")) {
+                NotificationActions.create(
+                    'Zone Creation Error (HTTP ' + failResponse.status.code + ')',
+                    failResponse.entity.error
+                );
+            } else {
+                NotificationActions.create(
+                    'Unable to create a new Domain',
+                    'This could be due to a network error. Check the console for further information.'
+                );
+                console.log(failResponse);
+            }
+        });
+    },
+
+    destroy: function(zoneId) {
+        var that = this;
+        var zone;
+
+        if(_.has(_items, zoneId)) {
+            zone = _items[zoneId];
+        } else {
+            NotificationActions.create(
+                'No such zone',
+                'Unable to find "' + zoneId + '" in Powerest Registry'
+            );
+        }
+
+        if (!window.confirm(
+                "Are you sure you want to delete '" + zone.name + "' and all associated records from your server?\n\n" +
+                "This operation can not be undone!"
+        )) {
+            return;
+        }
+
+        $('.wrapper').addClass('loading');
+        ApiClient.del('zones/' + zoneId, function(response) {
+            NotificationActions.create('Successfully deleted ' + zone.name);
+            window.setTimeout(function() {
+                that.loadFromApi();
+            }, 1000);
+        }, function(failResponse) {
+            $('.wrapper').removeClass('loading');
+
+            if(_.has(failResponse, "status")) {
+                NotificationActions.create(
+                    'Zone Deletion Error (HTTP ' + failResponse.status.code + ')',
+                    failResponse.entity.error
+                );
+            } else {
+                NotificationActions.create(
+                    'Unable to delete ' + zone.name,
+                    'This could be due to a network error. Check the console for further information.'
+                );
+                console.log(failResponse);
+            }
         });
     },
 
@@ -137,8 +204,8 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
                 ServerZoneStore.emitChange();
                 break;
 
-            case ServerZoneConstants.CONFIG_DESTROY:
-                // TODO delete zone
+            case ServerZoneConstants.ZONE_DESTROY:
+                ServerZoneStore.destroy(action.zoneId);
                 ServerZoneStore.emitChange();
                 break;
 
