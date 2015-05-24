@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var GenericRecord = require('./GenericRecord');
 var SoaRecord = require('./SoaRecord');
 

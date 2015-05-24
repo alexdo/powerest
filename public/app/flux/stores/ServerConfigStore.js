@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var assign = require('object-assign');
 
 var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');

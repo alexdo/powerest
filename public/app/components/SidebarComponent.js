@@ -1,6 +1,3 @@
-var _ = require('underscore');
-var $ = window.jQuery;
-var React = require('react');
 var Router = require('react-router'); // or var Router = ReactRouter; in browsers
 var Link = Router.Link;
 var createActiveRouteComponent = require('react-router-active-component'); // or var Router = ReactRouter; in browsers

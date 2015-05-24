@@ -1,8 +1,4 @@
-var _ = require('underscore');
-var $ = window.jQuery;
 var moment = require('moment');
-var React = require('react');
-
 var Config = require('../../config.js');
 var NotificationActions = require('../actions/NotificationActions');
 

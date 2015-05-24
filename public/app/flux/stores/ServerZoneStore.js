@@ -1,6 +1,4 @@
-var _ = require('underscore');
 var assign = require('object-assign');
-var $ = window.jQuery;
 
 var EventEmitter = require('events').EventEmitter;
 

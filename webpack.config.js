@@ -50,6 +50,11 @@ module.exports = {
             VERSION: JSON.stringify(require('./package.json').version),
             GIT_HEAD: gitHead,
             GIT_REVISION: gitRev
+        }),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            _: 'underscore',
+            react: 'react'
         })
     ]
 };

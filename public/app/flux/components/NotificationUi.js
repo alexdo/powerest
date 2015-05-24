@@ -1,6 +1,3 @@
-var _ = require('underscore');
-var $ = window.jQuery;
-var React = require('react');
 var Config = require('../../config.js');
 
 var NotificationStore = require('../stores/NotificationStore');

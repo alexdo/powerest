@@ -1,5 +1,3 @@
-var _ = require('underscore');
-
 class SoaRecord {
     constructor(apiResponse) {
         this.name = apiResponse.name;
