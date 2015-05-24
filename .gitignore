@@ -3,3 +3,4 @@ node_modules
 public/components
 public/dist
 public/app/config.js
+npm-debug.log
