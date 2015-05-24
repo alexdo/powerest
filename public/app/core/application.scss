@@ -144,3 +144,15 @@ h3[data-widget="collapse"] {
     }
   }
 }
+
+.record-soa {
+  dt {
+    width: 120px;
+    line-height: 2em;
+  }
+  dd {
+    margin-left: 134px;
+    line-height: 2em;
+    @extend .pre;
+  }
+}
