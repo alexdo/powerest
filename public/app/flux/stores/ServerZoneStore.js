@@ -9,6 +9,7 @@ var Config = require('../../config');
 var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var ServerZoneConstants = require('../constants/ServerZoneConstants');
 var NotificationActions = require('../actions/NotificationActions');
+var Zone = require('../models/Zone');
 
 var CHANGE_EVENT = 'change';
 
@@ -22,7 +23,7 @@ var _initialized = false;
  * @param {string} api_response The content of our config item
  */
 function create(name, api_response) {
-    _items[name] = api_response;
+    _items[name] = new Zone(api_response);
 }
 
 /**
