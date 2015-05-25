@@ -2,6 +2,7 @@ var Config = require('../../config.js');
 
 var ServerZoneStore = require('../stores/ServerZoneStore');
 var ServerZoneSoaRecord = require('./ServerZoneSoaRecord');
+var ServerZoneSoaHelp = require('./ServerZoneSoaHelp');
 
 var ServerZoneDetailUi = React.createClass({
     getInitialState: function() {
@@ -44,6 +45,7 @@ var ServerZoneDetailUi = React.createClass({
                                 record={_.find(this.state.zone.records, zone => zone.type.toUpperCase() === 'SOA')}
                                 key={_.uniqueId('SOA_Record_')}
                             />
+                            <ServerZoneSoaHelp />
                         </form>
                     </div>
                 </div>
