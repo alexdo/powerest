@@ -21,6 +21,10 @@ class Validator {
     static email(subject) {
         return subject.match(/@/) && subject.match(/\./)
     }
+
+    static numeric(subject) {
+        return !isNaN(subject);
+    }
 }
 
 module.exports = Validator;

@@ -25,6 +25,13 @@ var ServerZoneSoaRecord = React.createClass({
         switch(ref) {
             case 'primaryMaster':
                 return Validator.nameserver(this.state.primaryMaster) ? yes : no;
+            case 'email':
+                return Validator.email(this.state.email) ? yes : no;
+            case 'refresh':
+            case 'retry':
+            case 'expire':
+            case 'minTtl':
+                return Validator.numeric(this.state[ref]) ? yes : no;
             default:
                 return yes;
         }
@@ -68,32 +75,107 @@ var ServerZoneSoaRecord = React.createClass({
                                         ref='primaryMaster'
                                         groupClassName='group-class'
                                         labelClassName='label-class'
-                                        onChange={this.handleChange.bind(this, 'primaryMaster')} />
+                                        onChange={this.handleChange.bind(this, 'primaryMaster')}
+                                    />
                                 </dd>
 
                                 <dt>Serial</dt>
-                                <dd>{this.state.serial}</dd>
+                                <dd>
+                                    <Input
+                                        type='text'
+                                        defaultValue={this.state.serial}
+                                        ref='serial'
+                                        disabled={true}
+                                    />
+                                </dd>
 
                                 <dt>Refresh</dt>
-                                <dd>{this.state.refresh}</dd>
+                                <dd>
+                                    <Input
+                                        type='text'
+                                        defaultValue={this.state.refresh}
+                                        placeholder='86400'
+                                        bsStyle={this.validationState('refresh')}
+                                        hasFeedback
+                                        ref='refresh'
+                                        groupClassName='group-class'
+                                        labelClassName='label-class'
+                                        onChange={this.handleChange.bind(this, 'refresh')}
+                                    />
+                                </dd>
 
                                 <dt>Expire</dt>
-                                <dd>{this.state.expire}</dd>
+                                <dd>
+                                    <Input
+                                        type='text'
+                                        defaultValue={this.state.expire}
+                                        placeholder='3600000'
+                                        bsStyle={this.validationState('expire')}
+                                        hasFeedback
+                                        ref='expire'
+                                        groupClassName='group-class'
+                                        labelClassName='label-class'
+                                        onChange={this.handleChange.bind(this, 'expire')}
+                                    />
+                                </dd>
                             </dl>
                         </div>
                         <div className="col-sm-6 col-xs-12">
                             <dl className="dl-horizontal">
                                 <dt>Operator Email</dt>
-                                <dd>{this.state.email}</dd>
+                                <dd>
+                                    <Input
+                                        type='text'
+                                        defaultValue={this.state.email}
+                                        placeholder='postmaster@example.org'
+                                        bsStyle={this.validationState('email')}
+                                        hasFeedback
+                                        ref='email'
+                                        groupClassName='group-class'
+                                        labelClassName='label-class'
+                                        onChange={this.handleChange.bind(this, 'email')}
+                                    />
+                                </dd>
 
                                 <dt>Notified Serial</dt>
-                                <dd>{this.props.zone.notifiedSerial}</dd>
+                                <dd>
+                                    <Input
+                                        type='text'
+                                        defaultValue={this.props.zone.notifiedSerial}
+                                        ref='notifiedSerial'
+                                        disabled={true}
+                                    />
+                                </dd>
 
                                 <dt>Retry</dt>
-                                <dd>{this.state.retry}</dd>
+                                <dd>
+                                    <Input
+                                        type='text'
+                                        defaultValue={this.state.retry}
+                                        placeholder='7200'
+                                        bsStyle={this.validationState('retry')}
+                                        hasFeedback
+                                        ref='retry'
+                                        groupClassName='group-class'
+                                        labelClassName='label-class'
+                                        onChange={this.handleChange.bind(this, 'retry')}
+                                    />
+                                </dd>
 
                                 <dt>Minimum TTL</dt>
-                                <dd>{this.state.minTtl}</dd>
+                                <dd>
+                                    <Input
+                                        type='text'
+                                        defaultValue={this.state.minTtl}
+                                        placeholder='172800'
+                                        bsStyle={this.validationState('minTtl')}
+                                        hasFeedback
+                                        ref='minTtl'
+                                        groupClassName='group-class'
+                                        labelClassName='label-class'
+                                        onChange={this.handleChange.bind(this, 'minTtl')}
+                                    />
+                                </dd>
                             </dl>
                         </div>
                     </div>
