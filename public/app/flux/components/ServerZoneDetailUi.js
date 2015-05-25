@@ -38,11 +38,13 @@ var ServerZoneDetailUi = React.createClass({
             return (
                 <div className="row">
                     <div className="col-xs-12">
-                        <ServerZoneSoaRecord
-                            zone={this.state.zone}
-                            record={_.find(this.state.zone.records, zone => zone.type.toUpperCase() === 'SOA')}
-                            key={_.uniqid('SOA_Record_')}
-                        />
+                        <form id="zoneForm">
+                            <ServerZoneSoaRecord
+                                zone={this.state.zone}
+                                record={_.find(this.state.zone.records, zone => zone.type.toUpperCase() === 'SOA')}
+                                key={_.uniqueId('SOA_Record_')}
+                            />
+                        </form>
                     </div>
                 </div>
             );
