@@ -30,6 +30,7 @@
     "datatables-bootstrap3-plugin": "^0.4.0",
     "file-size": "^1.0.0",
     "flux": "^2.0.3",
+    "ipaddr.js": "^1.0.1",
     "jquery": "^2.1.4",
     "keymirror": "^0.1.1",
     "moment": "^2.10.3",
