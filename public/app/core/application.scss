@@ -155,4 +155,35 @@ h3[data-widget="collapse"] {
     line-height: 2em;
     @extend .pre;
   }
+
+  .help-popover {
+    font-size: 15px;
+    line-height: 16px;
+    position: absolute;
+    left: 16px;
+    display: block;
+    margin-top: 7px;
+    cursor: pointer;
+  }
+}
+
+.popover-title {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.popover-content {
+  line-height: 1.5em;
+
+  ul, ol {
+    padding-left: 16px;
+
+    li {
+      margin-bottom: 0.35em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
