@@ -5,7 +5,7 @@
   "author": "",
   "scripts": {
     "dev": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --content-base public/ --hot --colors",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack -p"
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack -p --config webpack.production.config.js --progress"
   },
   "devDependencies": {
     "autoprefixer-loader": "^1.2.0",

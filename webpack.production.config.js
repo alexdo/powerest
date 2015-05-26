@@ -8,7 +8,7 @@ var mainPath = path.resolve(__dirname, 'public', 'app', 'main.js');
 
 var gitHead = '';
 var gitRev = '';
-var env = 'development';
+var env = 'production';
 
 /**
  * Detect git HEAD
@@ -43,14 +43,8 @@ if (gitHead.length > 0) {
 }
 
 module.exports = {
-    entry: [
-        'webpack/hot/dev-server',
-        'webpack-dev-server/client?http://localhost:8080',
-        mainPath
-    ],
-    devtool: 'cheap-module-eval-source-map',
+    entry: [mainPath],
     output: {
-        pathinfo: true,
         path: buildPath,
         filename: 'bundle.js',
         publicPath: '/dist/'
@@ -75,6 +69,12 @@ module.exports = {
             $: 'jquery',
             _: 'lodash',
             React: 'react'
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                warnings: false
+            }
         })
+
     ]
 };
