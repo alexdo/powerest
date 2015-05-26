@@ -14,6 +14,9 @@ require('datatables');
 require('datatables-bootstrap3-plugin');
 require('../../components/admin-lte/dist/js/app');
 
+require('../../../node_modules/Select2/dist/css/select2.css');
+require('Select2');
+
 var App = React.createClass({
     render: function() {
         return (

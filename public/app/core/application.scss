@@ -187,3 +187,12 @@ h3[data-widget="collapse"] {
     }
   }
 }
+
+.rr-dropdown-wrapper {
+  margin-bottom: 8px;
+
+  .select2 {
+    display: block;
+    width: 100%;
+  }
+}
