@@ -16,14 +16,14 @@ var ServerZoneUi = React.createClass({
     },
 
     _initializeDataTables: function() {
-        this._dataTable = $('#zone-list-table').dataTable({
+        /*this._dataTable = $('#zone-list-table').dataTable({
             "bPaginate": true,
             "bLengthChange": false,
             "bFilter": false,
             "bSort": true,
             "bInfo": true,
             "bAutoWidth": false
-        });
+        });*/
     },
 
     _removeDataTables: function() {

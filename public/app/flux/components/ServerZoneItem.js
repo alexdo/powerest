@@ -14,7 +14,6 @@ var ServerZoneItem = React.createClass({
     render: function () {
         var dnssecIcon;
         var notifiedSerial;
-        var zoneEditUri = '#/zones/' + this.props.item.id;
 
         if (!!this.props.item.dnssec) {
             dnssecIcon = (<i className="ion ion-ios-locked text-green" data-toggle="tooltip" title="DNSSEC active" />)
@@ -42,7 +41,9 @@ var ServerZoneItem = React.createClass({
             <tr data-zone-id={this.props.item.id}>
                 <td className="leading-icon">
                     {dnssecIcon}
-                    <strong className="lg">{this.props.item.name}</strong>
+                    <Router.Link to="zone" params={{ zoneId: this.props.item.id }}>
+                        <strong className="lg">{this.props.item.name}</strong>
+                    </Router.Link>
                 </td>
                 <td>{this.props.item.serial}</td>
                 <td>{notifiedSerial}</td>
