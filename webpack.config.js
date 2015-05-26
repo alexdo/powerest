@@ -53,7 +53,7 @@ module.exports = {
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
-            _: 'underscore',
+            _: 'lodash',
             React: 'react'
         })
     ]
