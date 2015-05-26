@@ -86,7 +86,7 @@ var SidebarComponent = React.createClass({
 
                     <ul className="sidebar-menu">
                         <li className="header">{Config.server.toUpperCase()}</li>
-                        <NavLink to="zones">
+                        <NavLink to="zoneRoot">
                             <i className='ion ion-code-working'></i> <span>Zone Management</span>
                         </NavLink>
                         <NavLink to="home">
