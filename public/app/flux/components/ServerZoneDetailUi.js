@@ -7,7 +7,7 @@ var ServerZoneSoaHelp = require('./ServerZoneSoaHelp');
 var ServerZoneDetailUi = React.createClass({
     getInitialState: function() {
         return {
-            zone: ServerZoneStore.getById(this.props.zoneId)
+            zone: ServerZoneStore.getById(this.props.zoneId, true)
         };
     },
 
@@ -29,7 +29,7 @@ var ServerZoneDetailUi = React.createClass({
      * @return {object}
      */
     render: function() {
-        if(!this.state.zone) {
+        if(_.isEmpty(this.state.zone) || _.isEmpty(this.state.zone.records)) {
             $('.wrapper').addClass('loading');
             return (<div />);
 
@@ -54,7 +54,9 @@ var ServerZoneDetailUi = React.createClass({
     },
 
     _onChange: function() {
-        this.setState(this.getInitialState());
+        this.setState({
+            zone: ServerZoneStore.getById(this.props.zoneId, false)
+        });
     }
 
 });

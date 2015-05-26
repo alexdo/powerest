@@ -14,9 +14,11 @@ var ServerZoneDetail = require('./pages/ServerZoneDetail');
 var routes = (
     <Route path="/" name="root" handler={App}>
         <DefaultRoute name="home" handler={Home} />
-        <Route name="config" handler={ServerConfig} />
-        <Route name="zones" handler={ServerZones} />
-        <Route name="zone" path="zones/:zoneId" handler={ServerZoneDetail} />
+        <Route name="config" path="/config" handler={ServerConfig} />
+        <Route name="zoneRoot" path="/zones">
+            <DefaultRoute name="zones" handler={ServerZones} />
+            <Route name="zone" path="/zones/:zoneId" handler={ServerZoneDetail} />
+        </Route>
     </Route>
 );
 

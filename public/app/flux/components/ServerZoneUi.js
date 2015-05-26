@@ -34,8 +34,13 @@ var ServerZoneUi = React.createClass({
 
     componentDidMount: function() {
         ServerZoneStore.addChangeListener(this._onChange);
-        $.AdminLTE.boxWidget.activate();
         this._initializeDataTables();
+
+        try {
+            $.AdminLTE.boxWidget.activate();
+        } catch (e) {
+            console.log(e);
+        }
     },
 
     componentWillUnmount: function() {
@@ -49,6 +54,12 @@ var ServerZoneUi = React.createClass({
 
     componentDidUpdate: function() {
         this._initializeDataTables();
+
+        try {
+            $.AdminLTE.boxWidget.activate();
+        } catch (e) {
+            console.log(e);
+        }
     },
 
     /**

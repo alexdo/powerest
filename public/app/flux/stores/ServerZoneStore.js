@@ -53,10 +53,26 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         return _items;
     },
 
-    getById: function(zoneId) {
+    /**
+     * This function is called by zone detail views. In here, we need
+     * all records of our zone. However, the /zones Endpoint does not
+     * return any records.
+     * So, when coming from the zone index, we are about to operate on
+     *
+     *   a) a potentially outdated zone,
+     *   b) a zone which has no records.
+     *
+     * To avoid this, we check if the zone has records and if not refetch
+     * it.
+     *
+     * @param zoneId
+     * @param refetch
+     * @returns {*}
+     */
+    getById: function(zoneId, refetch = false) {
         var that = this;
 
-        if(_.has(_items, zoneId)) {
+        if (!refetch && _.has(_items, zoneId) && !_.isEmpty(_items[zoneId].records)) {
             return _items[zoneId];
         } else {
             ApiClient.get('zones/' + zoneId, function(response) {

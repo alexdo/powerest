@@ -59,6 +59,17 @@ var ServerZoneSoaRecord = React.createClass({
      * @return {object}
      */
     render: function () {
+        /*
+         * Coming from the zone list, our initial render does not
+         * have an SOA record. These will be fetched asynchronously
+         * and trigger a re-render of this component. However,
+         * operations on our state will yield undefined errors.
+         */
+        if(!this.props.record) {
+            return (<div />);
+        }
+
+
         return (
             <div className="box box-solid box-primary">
                 <div className="box-header">

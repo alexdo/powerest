@@ -1,6 +1,9 @@
-var React = require('react');
+var Router = require('react-router'); // or var Router = ReactRouter; in browsers
+var ReactRouterBootstrap = require('react-router-bootstrap');
+
 var ButtonGroup = require('react-bootstrap').ButtonGroup;
 var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
+var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
 var ServerZoneActions = require('../actions/ServerZoneActions');
 
@@ -19,17 +22,17 @@ var ServerZoneItem = React.createClass({
             dnssecIcon = (<i className="ion ion-ios-unlocked-outline text-muted" data-toggle="tooltip" title="DNSSEC inactive" />)
         }
 
-        if (this.props.item.serial === this.props.item.notified_serial) {
+        if (this.props.item.serial === this.props.item.notifiedSerial) {
             notifiedSerial = (
                 <span className="text-green">
-                    {this.props.item.notified_serial}
+                    {this.props.item.notifiedSerial}
                     &nbsp;<i className="ion ion-checkmark" />
                 </span>
             );
         } else {
             notifiedSerial = (
                 <span className="text-yellow" data-toggle="tooltip" title="PowerDNS is notifying slaves about an updated zone.">
-                    {this.props.item.notified_serial}
+                    {this.props.item.notifiedSerial}
                     &nbsp;<i className="ion ion-loop fa-spin" />
                 </span>
             );
@@ -47,11 +50,12 @@ var ServerZoneItem = React.createClass({
                 <td>
                     <ButtonToolbar>
                         <ButtonGroup bsSize="small">
-                            <a href={zoneEditUri} className="btn btn-primary btn-flat">
+                            <ButtonLink to="zone" params={{ zoneId: this.props.item.id }}
+                                bsStyle="primary" className="btn-flat">
                                 <i className="ion ion-edit" />
-                            </a>
+                            </ButtonLink>
                             <a href="#" onClick={this._triggerNotify} className="btn btn-default btn-flat">
-                                <i className="ion ion-loop" />
+                                <i className="ion ion-upload" />
                             </a>
                         </ButtonGroup>
                         <ButtonGroup bsSize="small">
