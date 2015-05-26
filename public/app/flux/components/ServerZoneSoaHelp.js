@@ -17,6 +17,10 @@ const ServerZoneSoaHelp = React.createClass({
         }
     },
 
+    componentDidMount() {
+        $.AdminLTE.boxWidget.activate();
+    },
+
     /**
      * @return {object}
      */

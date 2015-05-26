@@ -34,6 +34,7 @@ var ServerZoneUi = React.createClass({
 
     componentDidMount: function() {
         ServerZoneStore.addChangeListener(this._onChange);
+        $.AdminLTE.boxWidget.activate();
         this._initializeDataTables();
     },
 
