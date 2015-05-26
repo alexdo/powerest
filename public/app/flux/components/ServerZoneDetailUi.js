@@ -46,7 +46,7 @@ var ServerZoneDetailUi = React.createClass({
                                 record={_.find(this.state.zone.records, zone => zone.type.toUpperCase() === 'SOA')}
                                 key={_.uniqueId('SOA_Record_')}
                             />
-                            <ServerZoneRecordCreationForm />
+                            <ServerZoneRecordCreationForm zone={this.state.zone} />
                             <ServerZoneSoaHelp />
                         </form>
                     </div>

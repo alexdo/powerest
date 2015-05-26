@@ -190,9 +190,16 @@ h3[data-widget="collapse"] {
 
 .rr-dropdown-wrapper {
   margin-bottom: 8px;
+  margin-top: 26px;
 
   .select2 {
     display: block;
     width: 100%;
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  .new-record {
+    margin-top: 25px;
   }
 }

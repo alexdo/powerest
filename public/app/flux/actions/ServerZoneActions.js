@@ -30,6 +30,18 @@ var ServerZoneActions = {
             actionType: ServerZoneConstants.ZONE_DESTROY,
             zoneId: zoneId
         });
+    },
+
+    /**
+     * @param zoneId
+     * @param newRecord
+     */
+    addRecord: function(zoneId, newRecord) {
+        PowerestDispatcher.dispatch({
+            actionType: ServerZoneConstants.RECORD_ADD,
+            zoneId: zoneId,
+            record: newRecord
+        });
     }
 };
 

@@ -5,6 +5,7 @@ class GenericRecord {
         this.ttl = apiResponse.ttl;
         this.disabled = apiResponse.disabled;
         this.content = apiResponse.content;
+        this.priority = apiResponse.priority || null;
     }
 
     toContent() {

@@ -68,8 +68,9 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
      * @param zoneId
      * @param refetch
      * @returns {*}
+     * @param callback
      */
-    getById: function(zoneId, refetch = false) {
+    getById: function(zoneId, refetch = false, callback = null) {
         var that = this;
 
         if (!refetch && _.has(_items, zoneId) && !_.isEmpty(_items[zoneId].records)) {
@@ -79,6 +80,10 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
                 var zone = response.entity;
                 create(zone.id, zone);
                 that.emitChange();
+
+                if(_.isFunction(callback)) {
+                    callback(_items[zone.id]);
+                }
             }, function(failResponse) {
                 that.initialized = false;
                 console.log("FAILED REQUEST: ", failResponse);
@@ -221,6 +226,20 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         });
     },
 
+    addRecordToZone: function(record, zoneId) {
+        debugger;
+        var zone;
+
+        this.getById(zoneId, true, function(fetchedZone) {
+            debugger;
+            zone = fetchedZone;
+
+            zone.records.push(record);
+
+            debugger;
+        });
+    },
+
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
@@ -258,6 +277,11 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
 
             case ServerZoneConstants.ZONE_NOTIFY:
                 ServerZoneStore.notifyZone(action.zoneId);
+                ServerZoneStore.emitChange();
+                break;
+
+            case ServerZoneConstants.RECORD_ADD:
+                ServerZoneStore.addRecordToZone(action.record, action.zoneId);
                 ServerZoneStore.emitChange();
                 break;
         }

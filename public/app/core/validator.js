@@ -7,7 +7,7 @@ class Validator {
     }
 
     static domain(subject) {
-        return !!subject.match(/\..*?\./)
+        return !!subject.match(/\./)
     }
 
     static ip(subject) {

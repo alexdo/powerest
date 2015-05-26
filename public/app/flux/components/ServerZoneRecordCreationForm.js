@@ -2,17 +2,58 @@ var React = require('react');
 var ServerZoneActions = require('../actions/ServerZoneActions');
 var RrTypeDropdown = require('./RrTypeDropdown');
 var Input = require('react-bootstrap').Input;
+var Validator = require('../../core/validator');
+var GenericRecord = require('../models/GenericRecord');
 
 var ENTER_KEY_CODE = 13;
 
 var ServerZoneRecordCreationForm = React.createClass({
     getInitialState: function() {
         return {
-            name: this.props.name || '',
-            type: this.props.type || null,
-            priority: this.props.priority || 0,
-            ttl: this.props.ttl || 86400
+            name: this.props.name,
+            type: this.props.type,
+            priority: this.props.priority,
+            ttl: this.props.ttl
         };
+    },
+
+    validationState: function(ref) {
+        var yes = 'success';
+        var no = 'error';
+
+        switch(ref) {
+            case 'name':
+                if(_.isEmpty(this.state.name)) {
+                    return '';
+                } else {
+                    return Validator.domain(this.state.name) ? yes : no;
+                }
+            case 'ttl':
+            case 'priority':
+                if(_.isEmpty(this.state[ref])) {
+                    return '';
+                } else {
+                    return Validator.numeric(this.state[ref]) ? yes : no;
+                }
+            default:
+                return yes;
+        }
+    },
+
+    handleChange: function(ref, event) {
+        if(_.isEmpty(this.refs)) return;
+        if(!_.has(this.state, ref)) return;
+
+        var currentState = this.state;
+        currentState[ref] = this.refs[ref].getValue();
+
+        this.setState(currentState);
+    },
+
+    handleTypeChange(dropdown, newState) {
+        var currentState = this.state;
+        currentState.type = newState.selected;
+        this.setState(currentState);
     },
 
     /**
@@ -34,40 +75,47 @@ var ServerZoneRecordCreationForm = React.createClass({
                 <div className="box-body">
                     <div className="row">
                         <div className="col-xs-12 col-md-2 col-lg-2 rr-dropdown-wrapper">
-                            <RrTypeDropdown className="" />
+                            <RrTypeDropdown onChange={this.handleTypeChange} />
                         </div>
                         <div className="col-xs-12 col-md-4 col-lg-4">
                             <Input
                                 type='text'
-                                defaultValue=""
+                                label='Resource Name'
                                 placeholder='sub.example.org'
-                                bsStyle=""
+                                bsStyle={this.validationState('name')}
                                 hasFeedback
-                                ref='rrName'
+                                ref='name'
+                                onChange={this.handleChange.bind(this, 'name')}
+                                onKeyDown={this._onKeyDown}
                             />
                         </div>
                         <div className="col-xs-6 col-md-2 col-lg-2">
                             <Input
                                 type='number'
-                                defaultValue=""
+                                label='Priority'
                                 placeholder='0'
-                                bsStyle=""
+                                bsStyle={this.validationState('priority')}
                                 hasFeedback
                                 ref='priority'
+                                onChange={this.handleChange.bind(this, 'priority')}
+                                onKeyDown={this._onKeyDown}
                             />
                         </div>
                         <div className="col-xs-6 col-md-2 col-lg-2">
                             <Input
                                 type='number'
-                                defaultValue=""
+                                label='TTL'
                                 placeholder='86400'
-                                bsStyle=""
+                                bsStyle={this.validationState('ttl')}
                                 hasFeedback
                                 ref='ttl'
+                                onChange={this.handleChange.bind(this, 'ttl')}
+                                onKeyDown={this._onKeyDown}
                             />
                         </div>
                         <div className="col-xs-12 col-md-2 col-lg-2">
-                            <button className="btn btn-success btn-flat btn-block icon-left" type="button" onClick={this._save}>
+                            <button className="btn btn-success btn-flat btn-block icon-left new-record"
+                                type="button" onClick={this._save}>
                                 <i className="ion ion-ios-plus-outline" />
                                 Create
                             </button>
@@ -83,21 +131,7 @@ var ServerZoneRecordCreationForm = React.createClass({
      * used in different ways.
      */
     _save: function() {
-        if (this.state.value.length > 0 && this.state.value.match(/\./)) {
-            ServerZoneActions.create(this.state.value);
-            this.setState({
-                value: ''
-            });
-        }
-    },
-
-    /**
-     * @param {object} event
-     */
-    _onChange: function(/*object*/ event) {
-        this.setState({
-            value: event.target.value
-        });
+        ServerZoneActions.addRecord(this.props.zone.id, this.toRecord());
     },
 
     /**
@@ -107,6 +141,17 @@ var ServerZoneRecordCreationForm = React.createClass({
         if (event.keyCode === ENTER_KEY_CODE) {
             this._save();
         }
+    },
+
+    toRecord() {
+        return new GenericRecord({
+          name: this.state.name,
+          type: this.state.type,
+          ttl: this.state.ttl,
+          priority: this.state.priority,
+          content: this.name,
+          disabled: false
+        });
     }
 });
 
