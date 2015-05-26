@@ -50,9 +50,11 @@ var ServerZoneSoaRecord = React.createClass({
     showHelp: function(e) {
         e.preventDefault();
 
+        $(e.target).trigger('soaHelp');
+
         $('html, body').animate({
             scrollTop: $('#soaHelp').offset().top
-        }, 2000);
+        }, 200);
     },
 
     /**
@@ -85,7 +87,8 @@ var ServerZoneSoaRecord = React.createClass({
                             <dl className="dl-horizontal">
                                 <dt>
                                     <a href="#soaHelp" onClick={this.showHelp}>
-                                        <i className="help-popover ion ion-ios-information-outline fa-fw" />
+                                        <i className="help-popover ion ion-ios-information-outline fa-fw"
+                                            data-tab-name="primaryMaster" />
                                     </a>
                                     Primary Master
                                 </dt>
@@ -105,7 +108,8 @@ var ServerZoneSoaRecord = React.createClass({
 
                                 <dt>
                                     <a href="#soaHelp" onClick={this.showHelp}>
-                                        <i className="help-popover ion ion-ios-information-outline fa-fw" />
+                                        <i className="help-popover ion ion-ios-information-outline fa-fw"
+                                            data-tab-name="serial" />
                                     </a>
                                     Serial
                                 </dt>
@@ -120,7 +124,8 @@ var ServerZoneSoaRecord = React.createClass({
 
                                 <dt>
                                     <a href="#soaHelp" onClick={this.showHelp}>
-                                        <i className="help-popover ion ion-ios-information-outline fa-fw" />
+                                        <i className="help-popover ion ion-ios-information-outline fa-fw"
+                                            data-tab-name="refresh" />
                                     </a>
                                     Refresh
                                 </dt>
@@ -140,7 +145,8 @@ var ServerZoneSoaRecord = React.createClass({
 
                                 <dt>
                                     <a href="#soaHelp" onClick={this.showHelp}>
-                                        <i className="help-popover ion ion-ios-information-outline fa-fw" />
+                                        <i className="help-popover ion ion-ios-information-outline fa-fw"
+                                            data-tab-name="expire" />
                                     </a>
                                     Expire
                                 </dt>
@@ -163,7 +169,8 @@ var ServerZoneSoaRecord = React.createClass({
                             <dl className="dl-horizontal">
                                 <dt>
                                     <a href="#soaHelp" onClick={this.showHelp}>
-                                        <i className="help-popover ion ion-ios-information-outline fa-fw" />
+                                        <i className="help-popover ion ion-ios-information-outline fa-fw"
+                                            data-tab-name="email" />
                                     </a>
                                     Operator Email
                                 </dt>
@@ -183,7 +190,8 @@ var ServerZoneSoaRecord = React.createClass({
 
                                 <dt>
                                     <a href="#soaHelp" onClick={this.showHelp}>
-                                        <i className="help-popover ion ion-ios-information-outline fa-fw" />
+                                        <i className="help-popover ion ion-ios-information-outline fa-fw"
+                                            data-tab-name="serial" />
                                     </a>
                                     Notified Serial
                                 </dt>
@@ -198,7 +206,8 @@ var ServerZoneSoaRecord = React.createClass({
 
                                 <dt>
                                     <a href="#soaHelp" onClick={this.showHelp}>
-                                        <i className="help-popover ion ion-ios-information-outline fa-fw" />
+                                        <i className="help-popover ion ion-ios-information-outline fa-fw"
+                                            data-tab-name="retry" />
                                     </a>
                                     Retry
                                 </dt>
@@ -218,7 +227,8 @@ var ServerZoneSoaRecord = React.createClass({
 
                                 <dt>
                                     <a href="#soaHelp" onClick={this.showHelp}>
-                                        <i className="help-popover ion ion-ios-information-outline fa-fw" />
+                                        <i className="help-popover ion ion-ios-information-outline fa-fw"
+                                            data-tab-name="minTtl" />
                                     </a>
                                     Minimum TTL
                                 </dt>

@@ -10,7 +10,7 @@ const ServerZoneSoaHelp = React.createClass({
     },
 
     classFor(key, prefix = '') {
-        if(this.state.key === key) {
+        if (this.state.key === key) {
             return prefix + ' active';
         } else {
             return prefix;
@@ -19,6 +19,22 @@ const ServerZoneSoaHelp = React.createClass({
 
     componentDidMount() {
         $.AdminLTE.boxWidget.activate();
+        $(document).bind('soaHelp', this.openHelpTab);
+    },
+
+    componentWillUnmount() {
+        $(document).unbind('soaHelp', this.openHelpTab);
+    },
+
+    openHelpTab(event) {
+        var $trigger = $(event.target);
+        var tabName = $trigger.data('tabName');
+
+        if ($('#soaHelp').hasClass('collapsed-box')) {
+            $.AdminLTE.boxWidget.collapse($('#openSoaHelp'));
+        }
+
+        this.setState({key: tabName});
     },
 
     /**
@@ -26,12 +42,17 @@ const ServerZoneSoaHelp = React.createClass({
      */
     render() {
         return (
-            <div className="box box-info" id="soaHelp">
+            <div className="box box-info collapsed-box" id="soaHelp">
                 <div className="box-header">
-                    <h3 className="box-title">
+                    <h3 className="box-title" data-widget="collapse">
                         <i className="fa-fw ion ion-help-circled" />
-                        About SOA records and their elements
+                        About SOA record structure
                     </h3>
+                    <div className="box-tools pull-right">
+                        <button id="openSoaHelp" className="btn btn-box-tool" data-widget="collapse">
+                            <i className="fa fa-plus" />
+                        </button>
+                    </div>
                 </div>
                 <div className="box-body">
                     <div className="nav-tabs-custom">
@@ -133,7 +154,8 @@ const ServerZoneSoaHelp = React.createClass({
                             </div>
                             <div className={this.classFor('serial', 'tab-pane')} id="helpSerial">
                                 <p>
-                                    <b>Serial number</b> of the zone file that is incremented each time a change is made.
+                                    <b>Serial number</b>
+                                    of the zone file that is incremented each time a change is made.
                                     The secondary name servers compare the serial number returned by the primary name
                                     server with the serial number in their copy of the zone file to determine if they
                                     should update their zone file.  If the serial number from the primary name server
@@ -238,7 +260,8 @@ const ServerZoneSoaHelp = React.createClass({
                                         Defines the minimum time in seconds that a resource record should be cached by
                                         any name server. Though this was the original meaning of this field (and it
                                         still retains the name from this meaning), it was never actually used this
-                                        way by most name servers. <b>This meaning is now officially deprecated.</b>
+                                        way by most name servers.
+                                        <b>This meaning is now officially deprecated.</b>
                                     </li>
                                     <li>
                                         Defines the default Time To Live (TTL) for all resource records that do not
@@ -250,13 +273,16 @@ const ServerZoneSoaHelp = React.createClass({
                                     </li>
                                     <li>
                                         Defines the time in seconds that any name server or resolver should cache a
-                                        negative response. <b>This is now the official meaning of this field as
-                                        set by RFC 2308.</b>
+                                        negative response.
+                                        <b>This is now the official meaning of this field as
+                                            set by RFC 2308.</b>
                                     </li>
                                 </ul>
                                 <p>
-                                    Unlike all the other SOA fields, <u>the Minimum TTL effects every name server or
-                                    resolver that queries your domain</u>. If your DNS server is compliant with RFC
+                                    Unlike all the other SOA fields,
+                                    <u>the Minimum TTL effects every name server or
+                                        resolver that queries your domain</u>
+                                    . If your DNS server is compliant with RFC
                                     2308, then this field only applies to how long a negative response (that is, for
                                     a query where no resource record is found) is cached. But if your DNS server uses
                                     this as the default TTL for resource records without an explicit TTL, then it
