@@ -1,8 +1,10 @@
 var webpack = require('webpack');
 var fs = require('fs');
+var _ = require('lodash');
 
 var gitHead = '';
 var gitRev = '';
+var env = JSON.stringify(_.get(process, 'env.NODE_ENV', 'development'));
 
 fs.readFile('./.git/HEAD', 'utf8', function (err, data) {
     if (err) {
@@ -30,9 +32,33 @@ if (gitHead.length > 0) {
     });
 }
 
+var plugins = [
+    new webpack.DefinePlugin({
+        ENV: env,
+        VERSION: JSON.stringify(require('./package.json').version),
+        GIT_HEAD: gitHead,
+        GIT_REVISION: gitRev
+    }),
+    new webpack.ProvidePlugin({
+        $: 'jquery',
+        _: 'lodash',
+        React: 'react'
+    }),
+    new webpack.optimize.DedupePlugin()
+];
+
+if (env === 'prod' || env === 'production') {
+    plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                warnings: false
+            }
+        })
+    );
+}
+
 module.exports = {
     entry: './public/app/main.js',
-    //devtool: '#inline-source-map',
     output: {
         filename: './public/dist/bundle.js'
     },
@@ -45,16 +71,5 @@ module.exports = {
             { test: /\.(png|jpg)$/, loader: 'url-loader?limit=10240' } // inline base64 URLs for <=8k images, direct URLs for the rest
         ]
     },
-    plugins: [
-        new webpack.DefinePlugin({
-            VERSION: JSON.stringify(require('./package.json').version),
-            GIT_HEAD: gitHead,
-            GIT_REVISION: gitRev
-        }),
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            _: 'lodash',
-            React: 'react'
-        })
-    ]
+    plugins: plugins
 };
