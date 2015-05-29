@@ -54,6 +54,7 @@ var ServerZoneRecordCreationForm = React.createClass({
 
     handleTypeChange(dropdown, newState) {
         var currentState = this.state;
+	    debugger;
         currentState.type = newState.selected;
         this.setState(currentState);
     },
@@ -161,9 +162,9 @@ var ServerZoneRecordCreationForm = React.createClass({
         return new GenericRecord({
           name: this.state.name,
           type: this.state.type,
-          ttl: this.state.ttl,
-          priority: this.state.priority,
-          content: this.name,
+          ttl: parseInt(this.state.ttl, 10),
+          priority: parseInt(this.state.priority, 10),
+          content: this.state.content,
           disabled: false
         });
     }

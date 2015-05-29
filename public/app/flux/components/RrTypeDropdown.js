@@ -63,6 +63,8 @@ const RrTypeDropdown = React.createClass({
             selected: this.refs[ref].getDOMNode().value
         };
 
+	    debugger;
+
         if(_.isFunction(this.props.onChange)) {
             this.props.onChange(this, newState);
         }
@@ -79,6 +81,7 @@ const RrTypeDropdown = React.createClass({
     },
 
     render() {
+	    debugger;
         return (
             <select id={this.getId()} className={this.getClasses()} ref={this.getRef()}
                 onChange={this._handleChange} style={{width: '100%'}}>

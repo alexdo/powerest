@@ -158,9 +158,10 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
             nameservers: []
         };
 
+	    debugger;
         $('.wrapper').addClass('loading');
         ApiClient.post('zones', payload, function(response) {
-            NotificationActions.create('Successfully created ' + domainName);
+            NotificationActions.create('Zone creation', 'Successfully created ' + domainName);
             window.setTimeout(function() {
                 that.loadFromApi();
             }, 1000);
