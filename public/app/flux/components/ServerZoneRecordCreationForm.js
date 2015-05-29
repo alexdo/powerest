@@ -11,6 +11,7 @@ var ServerZoneRecordCreationForm = React.createClass({
     getInitialState: function() {
         return {
             name: this.props.name,
+            content: this.props.content,
             type: this.props.type,
             priority: this.props.priority,
             ttl: this.props.ttl
@@ -23,10 +24,11 @@ var ServerZoneRecordCreationForm = React.createClass({
 
         switch(ref) {
             case 'name':
-                if(_.isEmpty(this.state.name)) {
+            case 'content':
+                if(_.isEmpty(this.state[ref])) {
                     return '';
                 } else {
-                    return Validator.domain(this.state.name) ? yes : no;
+                    return Validator.domain(this.state[ref]) ? yes : no;
                 }
             case 'ttl':
             case 'priority':
@@ -74,10 +76,10 @@ var ServerZoneRecordCreationForm = React.createClass({
                 </div>
                 <div className="box-body">
                     <div className="row">
-                        <div className="col-xs-12 col-md-2 col-lg-2 rr-dropdown-wrapper">
+                        <div className="col-xs-12 col-md-2 rr-dropdown-wrapper">
                             <RrTypeDropdown onChange={this.handleTypeChange} />
                         </div>
-                        <div className="col-xs-12 col-md-4 col-lg-4">
+                        <div className="col-xs-12 col-md-5">
                             <Input
                                 type='text'
                                 label='Resource Name'
@@ -89,7 +91,19 @@ var ServerZoneRecordCreationForm = React.createClass({
                                 onKeyDown={this._onKeyDown}
                             />
                         </div>
-                        <div className="col-xs-6 col-md-2 col-lg-2">
+                        <div className="col-xs-12 col-md-5">
+                            <Input
+                                type='text'
+                                label='Content'
+                                placeholder='192.168.0.1'
+                                bsStyle={this.validationState('content')}
+                                hasFeedback
+                                ref='content'
+                                onChange={this.handleChange.bind(this, 'content')}
+                                onKeyDown={this._onKeyDown}
+                            />
+                        </div>
+                        <div className="col-xs-6 col-md-2 col-md-push-2">
                             <Input
                                 type='number'
                                 label='Priority'
@@ -101,7 +115,7 @@ var ServerZoneRecordCreationForm = React.createClass({
                                 onKeyDown={this._onKeyDown}
                             />
                         </div>
-                        <div className="col-xs-6 col-md-2 col-lg-2">
+                        <div className="col-xs-6 col-md-3 col-md-push-2">
                             <Input
                                 type='number'
                                 label='TTL'
@@ -113,7 +127,7 @@ var ServerZoneRecordCreationForm = React.createClass({
                                 onKeyDown={this._onKeyDown}
                             />
                         </div>
-                        <div className="col-xs-12 col-md-2 col-lg-2">
+                        <div className="col-xs-12 col-md-5 col-md-push-2">
                             <button className="btn btn-success btn-flat btn-block icon-left new-record"
                                 type="button" onClick={this._save}>
                                 <i className="ion ion-ios-plus-outline" />
