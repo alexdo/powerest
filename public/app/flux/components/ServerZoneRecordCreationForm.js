@@ -145,7 +145,27 @@ var ServerZoneRecordCreationForm = React.createClass({
      * used in different ways.
      */
     _save: function() {
-        ServerZoneActions.addRecord(this.props.zone.id, this.toRecord());
+        var validationStates = [
+            this.validationState('name'),
+            this.validationState('content'),
+            this.validationState('priority'),
+            this.validationState('ttl'),
+            _.isEmpty(this.state.type) ? 'error' : 'success'
+        ];
+
+        var isValid = true;
+
+        _.each(validationStates, function (valState) {
+            if(valState !== 'success') {
+                isValid = false;
+            }
+        });
+
+        if(isValid) {
+            ServerZoneActions.addRecord(this.props.zone.id, this.toRecord());
+        } else {
+            // TODO: Add an error message here
+        }
     },
 
     /**
