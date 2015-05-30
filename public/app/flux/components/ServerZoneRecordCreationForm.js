@@ -2,6 +2,7 @@ var React = require('react');
 var ServerZoneActions = require('../actions/ServerZoneActions');
 var RrTypeDropdown = require('./RrTypeDropdown');
 var Input = require('react-bootstrap').Input;
+var Alert = require('react-bootstrap').Alert;
 var Validator = require('../../core/validator');
 var GenericRecord = require('../models/GenericRecord');
 
@@ -14,7 +15,8 @@ var ServerZoneRecordCreationForm = React.createClass({
             content: this.props.content,
             type: this.props.type,
             priority: this.props.priority,
-            ttl: this.props.ttl
+            ttl: this.props.ttl,
+            prioEnabled: false
         };
     },
 
@@ -31,9 +33,16 @@ var ServerZoneRecordCreationForm = React.createClass({
                     return Validator.domain(this.state[ref]) ? yes : no;
                 }
             case 'ttl':
-            case 'priority':
                 if(_.isEmpty(this.state[ref])) {
                     return '';
+                } else {
+                    return Validator.numeric(this.state[ref]) ? yes : no;
+                }
+            case 'priority':
+                if(!this.state.prioEnabled) {
+                    return '';
+                } else if(_.isEmpty(this.state[ref])) {
+                    return no;
                 } else {
                     return Validator.numeric(this.state[ref]) ? yes : no;
                 }
@@ -55,6 +64,13 @@ var ServerZoneRecordCreationForm = React.createClass({
     handleTypeChange(dropdown, newState) {
         var currentState = this.state;
         currentState.type = newState.selected;
+
+        if(currentState.type === 'MX') {
+            currentState.prioEnabled = true;
+        } else {
+            currentState.prioEnabled = false;
+        }
+
         this.setState(currentState);
     },
 
@@ -62,6 +78,23 @@ var ServerZoneRecordCreationForm = React.createClass({
      * @return {object}
      */
     render: function () {
+        var info;
+
+        if(_.isEmpty(this.state.info)) {
+            info = (<div className="row" />);
+        } else {
+            info = (
+                <div className="row">
+                    <div className="col-xs-12">
+                        <Alert bsStyle="warning" onDismiss={this._dismissInfo}>
+                            <h4><i className="icon fa fa-warning"></i> Hint</h4>
+                            <p>{this.state.info}</p>
+                        </Alert>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="box box-success">
                 <div className="box-header">
@@ -75,6 +108,7 @@ var ServerZoneRecordCreationForm = React.createClass({
                     </div>
                 </div>
                 <div className="box-body">
+                    {info}
                     <div className="row">
                         <div className="col-xs-12 col-md-2 rr-dropdown-wrapper">
                             <RrTypeDropdown onChange={this.handleTypeChange} />
@@ -113,6 +147,7 @@ var ServerZoneRecordCreationForm = React.createClass({
                                 ref='priority'
                                 onChange={this.handleChange.bind(this, 'priority')}
                                 onKeyDown={this._onKeyDown}
+                                disabled={!this.state.prioEnabled}
                             />
                         </div>
                         <div className="col-xs-6 col-md-3 col-md-push-2">
@@ -148,7 +183,7 @@ var ServerZoneRecordCreationForm = React.createClass({
         var validationStates = [
             this.validationState('name'),
             this.validationState('content'),
-            this.validationState('priority'),
+            this.state.type === 'MX' ? this.validationState('priority') : 'success',
             this.validationState('ttl'),
             _.isEmpty(this.state.type) ? 'error' : 'success'
         ];
@@ -164,7 +199,9 @@ var ServerZoneRecordCreationForm = React.createClass({
         if(isValid) {
             ServerZoneActions.addRecord(this.props.zone.id, this.toRecord());
         } else {
-            // TODO: Add an error message here
+            var currentState = this.state;
+            currentState.info = "Please ensure all fields are filled properly.";
+            this.setState(currentState);
         }
     },
 
@@ -186,6 +223,12 @@ var ServerZoneRecordCreationForm = React.createClass({
           content: this.state.content,
           disabled: false
         });
+    },
+
+    _dismissInfo() {
+        var currentState = this.state;
+        currentState.info = null;
+        this.setState(currentState);
     }
 });
 

@@ -9,7 +9,17 @@ class GenericRecord {
     }
 
     toContent() {
-        return this.content;
+        var content = '';
+
+        if(_.isString(this.type) && this.type.toUpperCase() === 'MX') {
+            if(!_.isEmpty(this.priority) && parseInt(this.priority, 10) > 0) {
+                content += this.priority + ' ';
+            }
+        }
+
+        content += this.content;
+
+        return content;
     }
 }
 

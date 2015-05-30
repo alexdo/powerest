@@ -45,6 +45,13 @@ class PdnsApiClient {
         this.performRequest(client, 'PUT', url, payload, callback, errorCallback);
     }
 
+    patch(url, payload, callback, errorCallback) {
+        var client = this.client;
+        client = client.wrap(errorCode, { code: 400 });
+
+        this.performRequest(client, 'PATCH', url, payload, callback, errorCallback);
+    }
+
     del(url, callback, errorCallback) {
         var client = this.client;
         client = client.wrap(errorCode, { code: 400 });

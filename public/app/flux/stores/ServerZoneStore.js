@@ -228,16 +228,48 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
     },
 
     addRecordToZone: function(record, zoneId) {
-        debugger;
-        var zone;
+        var that = this;
 
-        this.getById(zoneId, true, function(fetchedZone) {
-            debugger;
-            zone = fetchedZone;
+        var payload = {
+            rrsets: [
+                {
+                    name: record.name,
+                    type: record.type,
+                    changetype: 'REPLACE',
+                    records: [{
+                        type: record.type,
+                        name: record.name,
+                        ttl: record.ttl,
+                        content: record.toContent(),
+                        disabled: record.disabled
+                    }],
+                    comments: []
+                }
+            ]
+        };
 
-            zone.records.push(record);
+        $('.wrapper').addClass('loading');
+        ApiClient.patch('zones/' + zoneId, payload, function(response) {
+            NotificationActions.create('Record creation', 'Successfully added ' + record.name + ' ' + record.type);
+            that.getById(zoneId, true, function() {
+                $('.wrapper').removeClass('loading');
+            });
 
-            debugger;
+        }, function(failResponse) {
+            $('.wrapper').removeClass('loading');
+
+            if(_.has(failResponse, "status")) {
+                NotificationActions.create(
+                    'Record Creation Error (HTTP ' + failResponse.status.code + ')',
+                    failResponse.entity.error
+                );
+            } else {
+                NotificationActions.create(
+                    'Unable to add a new Record',
+                    'This could be due to a network error. Check the console for further information.'
+                );
+                console.log(failResponse);
+            }
         });
     },
 
