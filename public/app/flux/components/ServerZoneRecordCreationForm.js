@@ -54,7 +54,6 @@ var ServerZoneRecordCreationForm = React.createClass({
 
     handleTypeChange(dropdown, newState) {
         var currentState = this.state;
-	    debugger;
         currentState.type = newState.selected;
         this.setState(currentState);
     },

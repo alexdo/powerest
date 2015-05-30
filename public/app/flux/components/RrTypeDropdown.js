@@ -13,7 +13,7 @@ const RrTypes = require('../constants/RecordTypeConstants');
 const RrTypeDropdown = React.createClass({
     getInitialState() {
         return {
-            selected: this.props.selectedValue || null
+            selected: this.props.selectedValue || _(this.getAllowedTypes()).values().first()
         }
     },
 
@@ -63,8 +63,6 @@ const RrTypeDropdown = React.createClass({
             selected: this.refs[ref].getDOMNode().value
         };
 
-	    debugger;
-
         if(_.isFunction(this.props.onChange)) {
             this.props.onChange(this, newState);
         }
@@ -73,15 +71,19 @@ const RrTypeDropdown = React.createClass({
     },
 
     componentDidMount() {
-        $('#' + this.getId()).select2();
+        $('#' + this.getId()).select2().on('change', this._handleChange);
+
+        // propagate initial state to parent component when mounting
+        if(_.isFunction(this.props.onChange)) {
+            this.props.onChange(this, this.state);
+        }
     },
 
     componentWillUnmount() {
-        $('#' + this.getId()).select2('destroy');
+        $('#' + this.getId()).select2('destroy').unbind('change');
     },
 
     render() {
-	    debugger;
         return (
             <select id={this.getId()} className={this.getClasses()} ref={this.getRef()}
                 onChange={this._handleChange} style={{width: '100%'}}>
