@@ -3,6 +3,7 @@ var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 
 var ApiClient = require('../../core/api');
+var Errors = require('../../core/errors');
 var Config = require('../../config');
 var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var ServerZoneConstants = require('../constants/ServerZoneConstants');
@@ -248,6 +249,8 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
             ]
         };
 
+        var error = false;
+
         $('.wrapper').addClass('loading');
         ApiClient.patch('zones/' + zoneId, payload, function(response) {
             NotificationActions.create('Record creation', 'Successfully added ' + record.name + ' ' + record.type);
@@ -259,10 +262,15 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
             $('.wrapper').removeClass('loading');
 
             if(_.has(failResponse, "status")) {
-                NotificationActions.create(
-                    'Record Creation Error (HTTP ' + failResponse.status.code + ')',
+                error = new Error(
+                    'Record creation failed (HTTP ' + failResponse.status.code + '): \n' +
                     failResponse.entity.error
                 );
+
+                //NotificationActions.create(
+                //    'Record Creation Error (HTTP ' + failResponse.status.code + ')',
+                //    failResponse.entity.error
+                //);
             } else {
                 NotificationActions.create(
                     'Unable to add a new Record',
@@ -271,6 +279,8 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
                 console.log(failResponse);
             }
         });
+
+        return {hasError: _.isError(error), error: error};
     },
 
     emitChange: function() {
@@ -314,8 +324,15 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
                 break;
 
             case ServerZoneConstants.RECORD_ADD:
-                ServerZoneStore.addRecordToZone(action.record, action.zoneId);
-                ServerZoneStore.emitChange();
+                let result = ServerZoneStore.addRecordToZone(action.record, action.zoneId);
+
+                debugger;
+                if(!result.hasErrors) {
+                    ServerZoneStore.emitChange();
+                } else {
+                    throw result.error;
+                }
+
                 break;
         }
 

@@ -67,20 +67,22 @@ class PdnsApiClient {
         }
 
         client(clientOptions)
-            .then(function(response) {
-                if(typeof callback === 'function') {
-                    callback(response);
-                } else {
-                    console.log(response)
+            .then(
+                function(response) {
+                    if(typeof callback === 'function') {
+                        callback(response);
+                    } else {
+                        console.log(response)
+                    }
+                },
+                function(failResponse) {
+                    if(typeof failCallback === 'function') {
+                        failCallback(failResponse);
+                    } else {
+                        console.log(failCallback)
+                    }
                 }
-            },
-            function(failResponse) {
-                if(typeof failCallback === 'function') {
-                    failCallback(failResponse);
-                } else {
-                    console.log(failCallback)
-                }
-            });
+            );
     }
 }
 

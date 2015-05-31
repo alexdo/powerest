@@ -207,13 +207,19 @@ var ServerZoneRecordCreationForm = React.createClass({
 
         if(isValid) {
             this.setState({info: null});
-            ServerZoneActions.addRecord(this.props.zone.id, this.toRecord());
-            debugger;
 
-            // reset fields
-            $('#' + this.getDomId() + ' input').val('');
-            // reset this component's state but preserve the type dropdown
-            this.setState(_.extend(this.getInitialState(), {type: this.state.type}));
+            try {
+                ServerZoneActions.addRecord(this.props.zone.id, this.toRecord());
+
+                // reset fields
+                $('#' + this.getDomId() + ' input').val('');
+                // reset this component's state but preserve the type dropdown
+                this.setState(_.extend(this.getInitialState(), {type: this.state.type}));
+            } catch(err) {
+                debugger;
+                ohSnap(err.message, 'red', 'icon-alert');
+            }
+
         } else {
             this.setState({info: "Please ensure all fields are filled properly."});
         }

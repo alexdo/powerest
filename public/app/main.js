@@ -1,4 +1,5 @@
-var React = require('react');
+require('babel/polyfill');
+
 var Router = require('react-router'); // or var Router = ReactRouter; in browsers
 var DefaultRoute = Router.DefaultRoute;
 var Route = Router.Route;
