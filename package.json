@@ -37,6 +37,7 @@
     "lodash": "^3.9.3",
     "moment": "^2.10.3",
     "object-assign": "^2.0.0",
+    "oh-snap": "alexdo/ohSnap",
     "react": "^0.13.3",
     "react-bootstrap": "^0.22.3",
     "react-router": "0.13.x",

@@ -7,6 +7,10 @@ var Validator = require('../../core/validator');
 var GenericRecord = require('../models/GenericRecord');
 var Config = require('../../config');
 
+var ActionLog = require('../ActionLog/Actions');
+var Action = require('../ActionLog/Action');
+var ActionStore = require('../ActionLog/Store');
+
 var ENTER_KEY_CODE = 13;
 
 var ServerZoneRecordCreationForm = React.createClass({
@@ -206,20 +210,28 @@ var ServerZoneRecordCreationForm = React.createClass({
         });
 
         if(isValid) {
+            let action = Action.create('Adding record to zone');
+            let that = this;
+
             this.setState({info: null});
+            ActionLog.add(action);
 
-            try {
-                ServerZoneActions.addRecord(this.props.zone.id, this.toRecord());
+            ActionStore.addChangeListener(() => {
+                if(action.hasFailed()) {
+                    ActionLog.showError(action);
+                } else {
+                    ActionLog.showSuccess(action);
 
-                // reset fields
-                $('#' + this.getDomId() + ' input').val('');
-                // reset this component's state but preserve the type dropdown
-                this.setState(_.extend(this.getInitialState(), {type: this.state.type}));
-            } catch(err) {
-                debugger;
-                ohSnap(err.message, 'red', 'icon-alert');
-            }
+                    // reset fields
+                    $('#' + that.getDomId() + ' input').val('');
+                    // reset this component's state but preserve the type dropdown
+                    that.setState(_.extend(that.getInitialState(), {type: that.state.type}));
+                }
 
+                ActionStore.removeAllListeners('change');
+            });
+
+            ServerZoneActions.addRecord(this.props.zone.id, this.toRecord(), action);
         } else {
             this.setState({info: "Please ensure all fields are filled properly."});
         }

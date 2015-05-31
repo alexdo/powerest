@@ -9,6 +9,8 @@ var PowerestDispatcher = require('../dispatcher/PowerestDispatcher');
 var ServerZoneConstants = require('../constants/ServerZoneConstants');
 var NotificationActions = require('../actions/NotificationActions');
 var Zone = require('../models/Zone');
+var ActionLog = require('../ActionLog/Actions');
+
 
 var CHANGE_EVENT = 'change';
 
@@ -228,7 +230,7 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
         });
     },
 
-    addRecordToZone: function(record, zoneId) {
+    addRecordToZone: function(record, zoneId, action) {
         var that = this;
 
         var payload = {
@@ -253,7 +255,11 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
 
         $('.wrapper').addClass('loading');
         ApiClient.patch('zones/' + zoneId, payload, function(response) {
-            NotificationActions.create('Record creation', 'Successfully added ' + record.name + ' ' + record.type);
+            //NotificationActions.create('Record creation', 'Successfully added ' + record.name + ' ' + record.type);
+
+            action.setMessage('Successfully added ' + record.name + ' ' + record.type);
+            ActionLog.finish(action.getId());
+
             that.getById(zoneId, true, function() {
                 $('.wrapper').removeClass('loading');
             });
@@ -262,25 +268,30 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
             $('.wrapper').removeClass('loading');
 
             if(_.has(failResponse, "status")) {
-                error = new Error(
+                action.setMessage(
                     'Record creation failed (HTTP ' + failResponse.status.code + '): \n' +
                     failResponse.entity.error
                 );
+                ActionLog.fail(action.getId());
 
                 //NotificationActions.create(
                 //    'Record Creation Error (HTTP ' + failResponse.status.code + ')',
                 //    failResponse.entity.error
                 //);
             } else {
-                NotificationActions.create(
+                action.setMessage(
                     'Unable to add a new Record',
                     'This could be due to a network error. Check the console for further information.'
                 );
+                ActionLog.fail(action.getId());
+
+                /*NotificationActions.create(
+                    'Unable to add a new Record',
+                    'This could be due to a network error. Check the console for further information.'
+                );*/
                 console.log(failResponse);
             }
         });
-
-        return {hasError: _.isError(error), error: error};
     },
 
     emitChange: function() {
@@ -324,15 +335,8 @@ var ServerZoneStore = assign({}, EventEmitter.prototype, {
                 break;
 
             case ServerZoneConstants.RECORD_ADD:
-                let result = ServerZoneStore.addRecordToZone(action.record, action.zoneId);
-
-                debugger;
-                if(!result.hasErrors) {
-                    ServerZoneStore.emitChange();
-                } else {
-                    throw result.error;
-                }
-
+                ServerZoneStore.addRecordToZone(action.record, action.zoneId, action.action);
+                ServerZoneStore.emitChange();
                 break;
         }
 

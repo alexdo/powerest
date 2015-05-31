@@ -14,7 +14,6 @@
   ],
   "dependencies": {
     "admin-lte": "~2.1.1",
-    "oh-snap": "https://github.com/justindomingue/ohSnap.git",
     "sweetalert": "~1.0.1"
   }
 }

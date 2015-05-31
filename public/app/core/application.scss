@@ -203,3 +203,39 @@ h3[data-widget="collapse"] {
     margin-top: 25px;
   }
 }
+
+#ohsnap {
+  max-width: 37.5%;
+  position: fixed;
+  bottom: 0;
+  right: 21px;
+  z-index: 100;
+  cursor: pointer;
+
+  .alert {
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #eed3d7;
+    border-radius: 4px;
+  }
+
+  .alert-red {
+    color: white;
+    background-color: #DA4453;
+  }
+
+  .alert-green {
+    color: white;
+    background-color: #37BC9B;
+  }
+
+  .alert-blue {
+    color: white;
+    background-color: #4A89DC;
+  }
+
+  .alert-yellow {
+    color: white;
+    background-color: #F6BB42;
+  }
+}

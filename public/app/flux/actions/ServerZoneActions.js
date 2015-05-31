@@ -35,12 +35,14 @@ var ServerZoneActions = {
     /**
      * @param zoneId
      * @param newRecord
+     * @param action
      */
-    addRecord: function(zoneId, newRecord) {
+    addRecord: function(zoneId, newRecord, action) {
         PowerestDispatcher.dispatch({
             actionType: ServerZoneConstants.RECORD_ADD,
             zoneId: zoneId,
-            record: newRecord
+            record: newRecord,
+            action: action
         });
     }
 };

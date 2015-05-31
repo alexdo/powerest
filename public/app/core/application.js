@@ -12,7 +12,6 @@ window.$ = window.jQuery;
 require('bootstrap');
 require('datatables');
 require('datatables-bootstrap3-plugin');
-require('../../components/oh-snap/ohsnap');
 require('../../components/admin-lte/dist/js/app');
 
 require('../../../node_modules/Select2/dist/css/select2.css');
