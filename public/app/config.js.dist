@@ -10,6 +10,9 @@ class PowerestConfig {
 
         // which server to manage
         this.server = "localhost";
+
+        this.default_record_ttl = 86400;
+        this.default_zone_ttl = 86400;
     }
 }
 

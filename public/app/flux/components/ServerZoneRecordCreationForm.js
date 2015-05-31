@@ -5,17 +5,26 @@ var Input = require('react-bootstrap').Input;
 var Alert = require('react-bootstrap').Alert;
 var Validator = require('../../core/validator');
 var GenericRecord = require('../models/GenericRecord');
+var Config = require('../../config');
 
 var ENTER_KEY_CODE = 13;
 
 var ServerZoneRecordCreationForm = React.createClass({
+    getDomId: function () {
+        if(!this._domId) {
+            this._domId = _.uniqueId('record_creation_');
+        }
+
+        return this._domId;
+    },
+
     getInitialState: function() {
         return {
             name: this.props.name,
             content: this.props.content,
             type: this.props.type,
             priority: this.props.priority,
-            ttl: this.props.ttl,
+            ttl: this.props.ttl || Config.default_record_ttl,
             prioEnabled: false
         };
     },
@@ -33,7 +42,7 @@ var ServerZoneRecordCreationForm = React.createClass({
                     return Validator.domain(this.state[ref]) ? yes : no;
                 }
             case 'ttl':
-                if(_.isEmpty(this.state[ref])) {
+                if(_.isEmpty(this.state[ref].toString())) {
                     return '';
                 } else {
                     return Validator.numeric(this.state[ref]) ? yes : no;
@@ -41,7 +50,7 @@ var ServerZoneRecordCreationForm = React.createClass({
             case 'priority':
                 if(!this.state.prioEnabled) {
                     return '';
-                } else if(_.isEmpty(this.state[ref])) {
+                } else if(_.isEmpty(this.state[ref].toString())) {
                     return no;
                 } else {
                     return Validator.numeric(this.state[ref]) ? yes : no;
@@ -96,7 +105,7 @@ var ServerZoneRecordCreationForm = React.createClass({
         }
 
         return (
-            <div className="box box-success">
+            <div id={this.getDomId()} className="box box-success">
                 <div className="box-header">
                     <h3 className="box-title" data-widget="collapse">
                         Add a new RR
@@ -154,6 +163,7 @@ var ServerZoneRecordCreationForm = React.createClass({
                             <Input
                                 type='number'
                                 label='TTL'
+                                defaultValue={Config.default_record_ttl}
                                 placeholder='86400'
                                 bsStyle={this.validationState('ttl')}
                                 hasFeedback
@@ -180,6 +190,7 @@ var ServerZoneRecordCreationForm = React.createClass({
      * used in different ways.
      */
     _save: function() {
+        var isValid = true;
         var validationStates = [
             this.validationState('name'),
             this.validationState('content'),
@@ -188,8 +199,6 @@ var ServerZoneRecordCreationForm = React.createClass({
             _.isEmpty(this.state.type) ? 'error' : 'success'
         ];
 
-        var isValid = true;
-
         _.each(validationStates, function (valState) {
             if(valState !== 'success') {
                 isValid = false;
@@ -197,11 +206,16 @@ var ServerZoneRecordCreationForm = React.createClass({
         });
 
         if(isValid) {
+            this.setState({info: null});
             ServerZoneActions.addRecord(this.props.zone.id, this.toRecord());
+            debugger;
+
+            // reset fields
+            $('#' + this.getDomId() + ' input').val('');
+            // reset this component's state but preserve the type dropdown
+            this.setState(_.extend(this.getInitialState(), {type: this.state.type}));
         } else {
-            var currentState = this.state;
-            currentState.info = "Please ensure all fields are filled properly.";
-            this.setState(currentState);
+            this.setState({info: "Please ensure all fields are filled properly."});
         }
     },
 
@@ -210,6 +224,9 @@ var ServerZoneRecordCreationForm = React.createClass({
      */
     _onKeyDown: function(event) {
         if (event.keyCode === ENTER_KEY_CODE) {
+            event.preventDefault();
+            event.stopPropagation();
+
             this._save();
         }
     },
