@@ -18,7 +18,8 @@ require('../../components/admin-lte/dist/js/app');
 require('../../../node_modules/Select2/dist/css/select2.css');
 require('Select2');
 
-require('../../components/sweetalert/dist/sweetalert-dev');
+//require('../../components/sweetalert/dist/sweetalert-dev');
+require('../../components/sweetalert/dev/sweetalert.es6');
 require('../../components/sweetalert/dist/sweetalert.css');
 
 
